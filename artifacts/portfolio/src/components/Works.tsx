@@ -30,6 +30,8 @@ function HorizontalRow({ items }: { items: typeof worksData[Category] }) {
               title={work.title}
               category={work.category}
               type={work.type}
+              src={work.src}
+              thumbnail={work.thumbnail}
             />
           </div>
         ))}
