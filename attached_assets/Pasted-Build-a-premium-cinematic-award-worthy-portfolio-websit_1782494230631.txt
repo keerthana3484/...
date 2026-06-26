@@ -1,0 +1,372 @@
+Build a premium, cinematic, award-worthy portfolio website for Ajay Tharendra, a Creative Video Editor, Motion Designer, and Student Freelancer, using React + Vite, Tailwind CSS, Framer Motion, and Lenis Smooth Scroll.
+
+The website should be inspired only by the luxury theme, typography, spacing, and elegant aesthetic of the provided reference image. Do not copy the design directly. Create a unique portfolio that feels modern, immersive, and premium.
+
+The website should look like an Awwwards-winning creative portfolio and should be fully responsive across desktop, laptop, tablet, mobile phones, ultrawide monitors, and all modern devices.
+
+GENERAL DESIGN
+Matte black background (#090909)
+Warm champagne / bronze accent colors
+Elegant serif + clean sans-serif typography similar to the reference
+Large cinematic spacing
+Soft glowing highlights
+Rounded corners
+Luxury minimal UI
+Glassmorphism only where appropriate
+Subtle film grain overlay
+Soft vignette
+Continuous animated gradient background that slowly moves throughout the website
+Background animation should loop infinitely and remain subtle without distracting from the content
+WEBSITE FEEL
+
+The entire website should feel cinematic and fluid.
+
+Visitors should feel like they are scrolling through an interactive motion graphics reel.
+
+Every animation should be smooth, premium, and natural.
+
+Never use abrupt animations.
+
+ANIMATIONS
+
+Use Lenis Smooth Scroll.
+
+Implement:
+
+Smooth scrolling
+Scroll interpolation
+Parallax effects
+Fade In
+Bottom-to-top reveal
+Blur reveal
+Scale animations
+Stagger animations
+Smooth page transitions
+Cursor hover effects
+Premium button interactions
+Card hover animations
+Video hover animations
+
+Animation settings:
+
+Opacity: 0 → 100%
+Translate Y: 60px → 0px
+Duration: 0.8–1.2 seconds
+Ease In Out
+Stagger children by 0.1 seconds
+
+Cards should slightly lift while hovering.
+
+Videos should gently scale.
+
+Buttons should have elegant hover transitions.
+
+NAVIGATION
+
+Fixed transparent navigation bar.
+
+Background blur after scrolling.
+
+Smooth scrolling to sections.
+
+Navigation:
+
+Home
+
+About
+
+Works
+
+Animations
+
+VFX
+
+Posters
+
+Reviews
+
+Contact
+
+HERO SECTION
+
+Fullscreen.
+
+Minimal.
+
+Center aligned.
+
+Headline:
+
+Creative Video Editor
+
+Motion Designer
+
+Subheading:
+
+Creating cinematic edits, motion graphics, promotional films, and visual experiences that leave a lasting impression.
+
+CTA Button:
+
+View My Works
+
+The button should smoothly scroll to the Works section.
+
+Background:
+
+Animated cinematic gradient with subtle blurred lights.
+
+ABOUT SECTION
+
+Large profile image placeholder.
+
+Name:
+
+Ajay Tharendra
+
+Title:
+
+Creative Video Editor & Motion Designer
+
+Status:
+
+Student Freelancer
+
+About Content:
+
+"I'm Ajay Tharendra, a student freelancer passionate about transforming ideas into cinematic visual experiences. I specialize in video editing, motion graphics, promotional films, AI-assisted creative workflows, and brand-focused content that captures attention and tells compelling stories. From concert promotions and cultural events to social media campaigns and title animations, I enjoy blending creativity with precision to create work that feels polished, engaging, and memorable. Every project is an opportunity to push visual storytelling further while delivering content that connects with its audience."
+
+Create elegant skill cards for:
+
+Video Editing
+Motion Graphics
+Promotional Videos
+AI-Assisted Creative Workflows
+Branding Content
+
+Software:
+
+Adobe After Effects
+Adobe Premiere Pro
+Blender
+Photoshop
+Illustrator
+WORKS SECTION
+
+Create filter tabs.
+
+Each category should use 9:16 portrait cards optimized for vertical video content.
+
+Every card should support MP4 videos.
+
+Videos should:
+
+Autoplay on hover
+Muted
+Loop
+Pause when hover ends
+Lazy load
+Rounded corners
+Smooth zoom animation
+Play icon overlay
+Dark hover overlay
+Fade reveal when entering viewport
+
+Categories:
+
+REELS
+
+Exactly 3 portrait video slots (9:16)
+
+PROMOTIONAL VIDEOS
+
+Exactly 3 portrait video slots (9:16)
+
+CONCERT EDITS
+
+Exactly 2 portrait video slots (9:16)
+
+1 landscape video slot(16:9)
+
+CULTURAL PROMOS
+
+Exactly 2 portrait video slots (9:16)
+
+1 landscape video slot(16:9)
+
+ANIMATIONS SECTION
+
+Maintain the same premium layout.
+
+2D Animation
+
+Exactly 2 video slots.(16:9)
+
+Title Animations
+
+Exactly 1 portrait video slot (9:16)
+
+Text Animations
+
+Exactly 3 portrait video slots (9:16)
+
+VFX SECTION
+
+Create exactly 2 landscape video cards (16:9).
+
+Maintain the same premium animations and hover interactions.
+
+POSTERS SECTION
+
+Create a dedicated Posters section before the Reviews section.
+
+This section showcases static poster designs.
+
+Create exactly 5 poster slots.
+
+Each poster card should include:
+
+High-quality image placeholder
+Project title
+Small category label
+Rounded corners
+Luxury hover animation
+Slight zoom on hover
+Upward movement while hovering
+Soft bronze overlay
+Fade-in animation while entering the viewport
+
+Clicking a poster should open a fullscreen premium lightbox.
+
+The lightbox should include:
+
+Smooth fade background
+High-resolution poster preview
+Previous button
+Next button
+Close button
+ESC key support
+Click outside to close
+
+Gallery Layout:
+
+Desktop:
+
+3-column masonry/grid layout.
+
+Tablet:
+
+2-column layout.
+
+Mobile:
+
+Single-column layout.
+
+Lazy load all poster images.
+
+Maintain the same luxury aesthetic throughout.
+
+CONTACT SECTION
+
+Large premium contact cards.
+
+Icons.
+
+Smooth hover effects.
+
+Instagram
+
+https://instagram.com/jaysthetics._
+
+WhatsApp
+
+https://wa.me/919500654475
+
+Email
+
+mailto@gmail.com
+
+Clicking each should redirect correctly.
+
+Display the heading:
+
+"Let's create something unforgettable."
+
+FOOTER
+
+Ajay Tharendra
+
+Creative Video Editor • Motion Designer
+
+© 2026
+
+RESPONSIVENESS
+
+The website must be perfectly responsive on:
+
+Mobile phones
+Tablets
+iPads
+Small laptops
+Large laptops
+Desktop monitors
+Ultrawide displays
+4K monitors
+
+Adjust typography, spacing, navigation, grids, and media automatically for every screen size.
+
+Ensure touch-friendly interactions on mobile.
+
+Maintain smooth scrolling and animations across all devices.
+
+PERFORMANCE
+Lazy load all videos
+Lazy load images
+Code splitting
+Optimized assets
+Reusable React components
+Maintain Lighthouse Performance score above 90
+Avoid layout shifts
+Fast initial loading
+COMPONENT STRUCTURE
+
+Create reusable React components:
+
+Navbar
+
+Hero
+
+About
+
+Works
+
+Animations
+
+VFX
+
+Posters
+
+Reviews
+
+Contact
+
+Footer
+
+GradientBackground
+
+CursorEffects
+
+ScrollAnimations
+
+VideoCard
+
+PosterCard
+
+Lightbox
+
+Create reusable data arrays so all videos, poster images, titles, and descriptions can be replaced easily without changing component code.
+
+Avoid Lorem Ipsum.
+
+Use meaningful placeholder project names.
+
+The final experience should feel luxurious, cinematic, immersive, elegant, fluid, and designed specifically for a high-end creative video editor portfolio with exceptional motion design, premium typography, seamless animations, and an unforgettable browsing experience.
