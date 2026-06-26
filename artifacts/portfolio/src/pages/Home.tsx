@@ -8,6 +8,7 @@ import Works from "@/components/Works";
 import AnimationsSection from "@/components/AnimationsSection";
 import VFXSection from "@/components/VFXSection";
 import PostersSection from "@/components/PostersSection";
+import ToolsSection from "@/components/ToolsSection";
 import Reviews from "@/components/Reviews";
 import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
@@ -29,6 +30,7 @@ export default function Home() {
         <AnimationsSection />
         <VFXSection />
         <PostersSection />
+        <ToolsSection />
         <Reviews />
         <Contact />
       </main>
