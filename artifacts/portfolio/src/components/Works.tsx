@@ -20,12 +20,9 @@ function HorizontalRow({ items }: { items: typeof worksData[Category] }) {
 
   return (
     <div className="relative">
-      <div ref={rowRef} className="scroll-row">
+      <div ref={rowRef} className="scroll-row" style={{ height: '480px' }}>
         {items.map((work) => (
-          <div
-            key={work.id}
-            className={work.type === '9:16' ? 'w-[220px] sm:w-[260px]' : 'w-[340px] sm:w-[440px]'}
-          >
+          <div key={work.id} className="h-full flex-shrink-0">
             <VideoCard
               title={work.title}
               category={work.category}
@@ -36,7 +33,6 @@ function HorizontalRow({ items }: { items: typeof worksData[Category] }) {
           </div>
         ))}
       </div>
-      {/* Right-edge fade hint */}
       <div className="pointer-events-none absolute right-0 top-0 h-full w-16 bg-gradient-to-l from-background to-transparent" />
     </div>
   );

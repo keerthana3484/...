@@ -20,5 +20,5 @@ export const titleAnimations: AnimationItem[] = [
 export const Motionposter: AnimationItem[] = [
   { id: 4, title: 'Trophy Event', category: 'Text Animation', type: '9:16', src: '/videos/CCL.mp4' },
   { id: 5, title: 'After Video', category: 'Text Animation', type: '9:16', src:'/videos/Motion.mp4'},
-  { id: 6, title: 'Fade Reveal', category: 'Text Animation', type: '9:16', src: undefined },
+  { id: 6, title: 'Event Promo Poster', category: 'Text Animation', type: '16:9', src: '/videos/Comp 1.mp4' },
 ];

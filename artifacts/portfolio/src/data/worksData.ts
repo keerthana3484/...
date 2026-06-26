@@ -30,10 +30,10 @@ export const worksData: Record<string, WorkItem[]> = {
   ],
   'MASHUPS':[
     { id: 13, title: 'Atharva Murali', category: 'Mashup', type: '16:9', src: '/videos/Mashup 1.mp4'},
-    { id: 14, title: 'Mashup 2', category: 'Mashup', type: '16:9', src: '/videos/Mashup 2.mp4'},
+    { id: 14, title: 'Chinna Kuyil Chitra', category: 'Mashup', type: '16:9', src: '/videos/Mashup 2.mp4'},
     { id: 15, title: 'Mashup 3', category: 'Mashup', type: '16:9', src: '/videos/Mashup 3.mp4'},
   ],
   'LYRICAL VIDEO':[
-    { id: 16, title: 'Lyric Video', category: 'Lyric Video', type: '16:9', src: '/videos/Lyric Video.mp4'}
+    { id: 16, title: 'Thoorigai-Short film', category: 'Lyric Video', type: '16:9', src: '/videos/Lyrical Video.mp4'}
   ]
 };

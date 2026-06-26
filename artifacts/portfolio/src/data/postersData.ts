@@ -7,7 +7,7 @@ export type PosterItem = {
 };
 
 export const postersData: PosterItem[] = [
-  { id: 1, title: 'Midnight Frequency', category: 'Concert Poster', gradient: 'linear-gradient(135deg, #4c1d95, #3730a3, #1e1b4b)', src: undefined },
+  { id: 1, title: 'Fan Art', category: 'Re-Visualised', gradient: 'linear-gradient(135deg, #4c1d95, #3730a3, #1e1b4b)', src:'/posters/Champagini.png' },
   { id: 2, title: 'Solstice Rising',    category: 'Cultural Event',  gradient: 'linear-gradient(135deg, #b45309, #c2410c, #7c2d12)', src: undefined },
   { id: 3, title: 'Neon Noir',          category: 'Brand Identity',  gradient: 'linear-gradient(135deg, #0e7490, #0f766e, #134e4a)', src: undefined },
   { id: 4, title: 'Ember & Ash',        category: 'Film Promo',      gradient: 'linear-gradient(135deg, #c2410c, #9a3412, #431407)', src: undefined },

@@ -34,12 +34,12 @@ export default function VFXSection() {
         variants={stagger}
       >
         <div className="relative">
-          <div className="scroll-row">
+          <div className="scroll-row" style={{ height: '480px' }}>
             {vfxData.map((item) => (
               <motion.div
                 key={item.id}
                 variants={fadeUp}
-                className="w-[340px] sm:w-[500px] lg:w-[600px]"
+                className="h-full flex-shrink-0"
               >
                 <VideoCard
                   title={item.title}

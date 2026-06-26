@@ -31,7 +31,7 @@ export default function VideoCard({ title, category, type, src, thumbnail }: Vid
 
   return (
     <div
-      className={`group relative w-full overflow-hidden rounded-2xl bg-card border border-card-border cursor-pointer transition-transform duration-500 hover:scale-[1.02] ${isPortrait ? 'aspect-[9/16]' : 'aspect-video'} flex flex-col`}
+      className={`group relative h-full overflow-hidden rounded-2xl bg-card border border-card-border cursor-pointer transition-transform duration-500 hover:scale-[1.02] ${isPortrait ? 'aspect-[9/16]' : 'aspect-video'} flex flex-col`}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
