@@ -2,22 +2,23 @@ export type AnimationItem = {
   id: number;
   title: string;
   category: string;
-  type: '9:16' | '16:9';
+  type: '9:16' | '16:9' | '1:1';
   src?: string;       // e.g. '/videos/morphic-dreamscape.mp4'
   thumbnail?: string; // e.g. '/thumbnails/morphic-dreamscape.jpg'
 };
 
 export const twoDAnimations: AnimationItem[] = [
-  { id: 1, title: 'Morphic Dreamscape', category: '2D Animation', type: '16:9', src: undefined },
-  { id: 2, title: 'Liquid Geometry', category: '2D Animation', type: '16:9', src: undefined },
+  { id: 1, title: 'Recreations', category: '2D Animation', type: '1:1', src: '/videos/2d Animation 1.mp4'},
+  { id: 2, title: 'Smooth Loops', category: '2D Animation', type: '16:9', src:'/videos/2d Animation.mp4'},
+  { id: 3, title: 'Invitations', category: '2D Animation', type: '16:9', src:'/videos/Invitation-1.mp4'},
 ];
 
 export const titleAnimations: AnimationItem[] = [
   { id: 3, title: 'Cinematic Opening', category: 'Title Animation', type: '9:16', src: undefined },
 ];
 
-export const textAnimations: AnimationItem[] = [
-  { id: 4, title: 'Glitch Type', category: 'Text Animation', type: '9:16', src: undefined },
-  { id: 5, title: 'Kinetic Words', category: 'Text Animation', type: '9:16', src: undefined },
+export const Motionposter: AnimationItem[] = [
+  { id: 4, title: 'Trophy Event', category: 'Text Animation', type: '9:16', src: '/videos/CCL.mp4' },
+  { id: 5, title: 'After Video', category: 'Text Animation', type: '9:16', src:'/videos/Motion.mp4'},
   { id: 6, title: 'Fade Reveal', category: 'Text Animation', type: '9:16', src: undefined },
 ];

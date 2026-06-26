@@ -19,13 +19,21 @@ export const worksData: Record<string, WorkItem[]> = {
     { id: 6, title: 'Ethereal Brand Film', category: 'Promo', type: '9:16', src: undefined },
   ],
   'CONCERT EDITS': [
-    { id: 7, title: 'Resonance Live', category: 'Concert', type: '9:16', src: undefined },
+    { id: 7, title: 'Sana-The One', category: 'Concert', type: '16:9', src: '/videos/Sana 1.mp4' },
     { id: 8, title: 'Amplify Sessions', category: 'Concert', type: '9:16', src: undefined },
-    { id: 9, title: 'Stage Odyssey', category: 'Concert', type: '16:9', src: undefined },
+    { id: 9, title: 'Stage Odyssey', category: 'Concert', type: '9:16', src: undefined },
   ],
   'CULTURAL PROMOS': [
     { id: 10, title: 'Heritage Unveiled', category: 'Cultural', type: '9:16', src: undefined },
     { id: 11, title: 'Festival of Light', category: 'Cultural', type: '9:16', src: undefined },
     { id: 12, title: 'Roots & Rhythm', category: 'Cultural', type: '16:9', src: undefined },
   ],
+  'MASHUPS':[
+    { id: 13, title: 'Atharva Murali', category: 'Mashup', type: '16:9', src: '/videos/Mashup 1.mp4'},
+    { id: 14, title: 'Mashup 2', category: 'Mashup', type: '16:9', src: '/videos/Mashup 2.mp4'},
+    { id: 15, title: 'Mashup 3', category: 'Mashup', type: '16:9', src: '/videos/Mashup 3.mp4'},
+  ],
+  'LYRICAL VIDEO':[
+    { id: 16, title: 'Lyric Video', category: 'Lyric Video', type: '16:9', src: '/videos/Lyric Video.mp4'}
+  ]
 };

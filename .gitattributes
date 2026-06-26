@@ -1,0 +1,5 @@
+artifacts/portfolio/public/videos/2d[[:space:]]Animation[[:space:]]1.mp4 filter=lfs diff=lfs merge=lfs -text
+artifacts/portfolio/public/videos/Invitation-1.mp4 filter=lfs diff=lfs merge=lfs -text
+artifacts/portfolio/public/videos/Mashup[[:space:]]1.mp4 filter=lfs diff=lfs merge=lfs -text
+artifacts/portfolio/public/videos/Rare[[:space:]]Piece[[:space:]]Vanjaram[[:space:]].mp4 filter=lfs diff=lfs merge=lfs -text
+artifacts/portfolio/public/videos/Sana[[:space:]]1.mp4 filter=lfs diff=lfs merge=lfs -text

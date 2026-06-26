@@ -1,3 +1,5 @@
+import { animations } from "framer-motion";
+
 export type VFXItem = {
   id: number;
   title: string;
@@ -8,6 +10,6 @@ export type VFXItem = {
 };
 
 export const vfxData: VFXItem[] = [
-  { id: 1, title: 'Particle Storm', category: 'VFX', type: '16:9', src: undefined },
+  { id: 1, title: 'Smooth Animations', category: 'VFX', type: '16:9', src: '/videos/2d Animation.mp4' },
   { id: 2, title: 'Digital Glitch', category: 'VFX', type: '16:9', src: undefined },
 ];

@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 import VideoCard from './VideoCard';
-import { twoDAnimations, titleAnimations, textAnimations, AnimationItem } from '../data/animationsData';
+import { twoDAnimations, titleAnimations, Motionposter, AnimationItem } from '../data/animationsData';
 
 const fadeUp = {
   hidden: { opacity: 0, y: 40, filter: 'blur(10px)' },
@@ -66,8 +66,8 @@ export default function AnimationsSection() {
         </motion.div>
 
         <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.1 }} variants={stagger}>
-          <motion.h3 variants={fadeUp} className="text-xl font-serif mb-6 text-foreground/80">Text Animations</motion.h3>
-          <HorizontalRow items={textAnimations} />
+          <motion.h3 variants={fadeUp} className="text-xl font-serif mb-6 text-foreground/80">Motion Poster</motion.h3>
+          <HorizontalRow items={Motionposter} />
         </motion.div>
       </div>
     </section>
