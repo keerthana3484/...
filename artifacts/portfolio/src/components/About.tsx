@@ -25,7 +25,7 @@ const skills = [
   { icon: Briefcase, label: 'Branding Content' }
 ];
 
-const software = ['After Effects', 'Premiere Pro', 'Blender', 'Photoshop', 'Illustrator'];
+const software = ['After Effects', 'Premiere Pro', 'Photoshop'];
 
 export default function About() {
   return (
