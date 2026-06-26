@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
 import VideoCard from './VideoCard';
+import { twoDAnimations, titleAnimations, textAnimations, AnimationItem } from '../data/animationsData';
 
 const fadeUp = {
   hidden: { opacity: 0, y: 40, filter: 'blur(10px)' },
@@ -11,19 +12,7 @@ const stagger = {
   visible: { transition: { staggerChildren: 0.1 } }
 };
 
-const twoD = [
-  { id: 1, title: 'Morphic Dreamscape', category: '2D Animation', type: '16:9' as const },
-  { id: 2, title: 'Liquid Geometry', category: '2D Animation', type: '16:9' as const }
-];
-
-const titlesAndText = [
-  { id: 3, title: 'Cinematic Opening', category: 'Title Animation', type: '9:16' as const },
-  { id: 4, title: 'Glitch Type', category: 'Text Animation', type: '9:16' as const },
-  { id: 5, title: 'Kinetic Words', category: 'Text Animation', type: '9:16' as const },
-  { id: 6, title: 'Fade Reveal', category: 'Text Animation', type: '9:16' as const }
-];
-
-function HorizontalRow({ items }: { items: { id: number; title: string; category: string; type: '9:16' | '16:9' }[] }) {
+function HorizontalRow({ items }: { items: AnimationItem[] }) {
   return (
     <div className="relative">
       <div className="scroll-row">
@@ -32,7 +21,13 @@ function HorizontalRow({ items }: { items: { id: number; title: string; category
             key={item.id}
             className={item.type === '9:16' ? 'w-[220px] sm:w-[260px]' : 'w-[340px] sm:w-[440px]'}
           >
-            <VideoCard title={item.title} category={item.category} type={item.type} />
+            <VideoCard
+              title={item.title}
+              category={item.category}
+              type={item.type}
+              src={item.src}
+              thumbnail={item.thumbnail}
+            />
           </div>
         ))}
       </div>
@@ -60,26 +55,19 @@ export default function AnimationsSection() {
       </motion.div>
 
       <div className="space-y-20">
-        {/* 2D Animations */}
-        <motion.div
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.1 }}
-          variants={stagger}
-        >
+        <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.1 }} variants={stagger}>
           <motion.h3 variants={fadeUp} className="text-xl font-serif mb-6 text-foreground/80">2D Animation</motion.h3>
-          <HorizontalRow items={twoD} />
+          <HorizontalRow items={twoDAnimations} />
         </motion.div>
 
-        {/* Titles & Text */}
-        <motion.div
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.1 }}
-          variants={stagger}
-        >
-          <motion.h3 variants={fadeUp} className="text-xl font-serif mb-6 text-foreground/80">Titles & Typography</motion.h3>
-          <HorizontalRow items={titlesAndText} />
+        <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.1 }} variants={stagger}>
+          <motion.h3 variants={fadeUp} className="text-xl font-serif mb-6 text-foreground/80">Title Animations</motion.h3>
+          <HorizontalRow items={titleAnimations} />
+        </motion.div>
+
+        <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.1 }} variants={stagger}>
+          <motion.h3 variants={fadeUp} className="text-xl font-serif mb-6 text-foreground/80">Text Animations</motion.h3>
+          <HorizontalRow items={textAnimations} />
         </motion.div>
       </div>
     </section>

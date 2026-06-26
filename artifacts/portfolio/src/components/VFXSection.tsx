@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
 import VideoCard from './VideoCard';
+import { vfxData } from '../data/vfxData';
 
 const fadeUp = {
   hidden: { opacity: 0, y: 40, filter: 'blur(10px)' },
@@ -10,11 +11,6 @@ const stagger = {
   hidden: {},
   visible: { transition: { staggerChildren: 0.1 } }
 };
-
-const vfx = [
-  { id: 1, title: 'Particle Storm', category: 'VFX', type: '16:9' as const },
-  { id: 2, title: 'Digital Glitch', category: 'VFX', type: '16:9' as const }
-];
 
 export default function VFXSection() {
   return (
@@ -39,13 +35,19 @@ export default function VFXSection() {
       >
         <div className="relative">
           <div className="scroll-row">
-            {vfx.map((item) => (
+            {vfxData.map((item) => (
               <motion.div
                 key={item.id}
                 variants={fadeUp}
                 className="w-[340px] sm:w-[500px] lg:w-[600px]"
               >
-                <VideoCard title={item.title} category={item.category} type={item.type} />
+                <VideoCard
+                  title={item.title}
+                  category={item.category}
+                  type={item.type}
+                  src={item.src}
+                  thumbnail={item.thumbnail}
+                />
               </motion.div>
             ))}
           </div>
