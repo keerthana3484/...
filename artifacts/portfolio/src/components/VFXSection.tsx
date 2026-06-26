@@ -18,8 +18,8 @@ const vfx = [
 
 export default function VFXSection() {
   return (
-    <section id="vfx" className="py-32 px-6 lg:px-12 w-full max-w-7xl mx-auto">
-      <motion.div 
+    <section id="vfx" className="py-32 w-full max-w-7xl mx-auto px-6 lg:px-12">
+      <motion.div
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, amount: 0.2 }}
@@ -31,18 +31,26 @@ export default function VFXSection() {
         </motion.h2>
       </motion.div>
 
-      <motion.div 
+      <motion.div
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, amount: 0.2 }}
         variants={stagger}
-        className="grid grid-cols-1 md:grid-cols-2 gap-4"
       >
-        {vfx.map((item) => (
-          <motion.div key={item.id} variants={fadeUp}>
-            <VideoCard {...item} />
-          </motion.div>
-        ))}
+        <div className="relative">
+          <div className="scroll-row">
+            {vfx.map((item) => (
+              <motion.div
+                key={item.id}
+                variants={fadeUp}
+                className="w-[340px] sm:w-[500px] lg:w-[600px]"
+              >
+                <VideoCard title={item.title} category={item.category} type={item.type} />
+              </motion.div>
+            ))}
+          </div>
+          <div className="pointer-events-none absolute right-0 top-0 h-full w-16 bg-gradient-to-l from-background to-transparent" />
+        </div>
       </motion.div>
     </section>
   );

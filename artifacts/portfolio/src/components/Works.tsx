@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { worksData } from '../data/worksData';
 import VideoCard from './VideoCard';
@@ -15,13 +15,38 @@ const stagger = {
 
 type Category = keyof typeof worksData;
 
+function HorizontalRow({ items }: { items: typeof worksData[Category] }) {
+  const rowRef = useRef<HTMLDivElement>(null);
+
+  return (
+    <div className="relative">
+      <div ref={rowRef} className="scroll-row">
+        {items.map((work) => (
+          <div
+            key={work.id}
+            className={work.type === '9:16' ? 'w-[220px] sm:w-[260px]' : 'w-[340px] sm:w-[440px]'}
+          >
+            <VideoCard
+              title={work.title}
+              category={work.category}
+              type={work.type}
+            />
+          </div>
+        ))}
+      </div>
+      {/* Right-edge fade hint */}
+      <div className="pointer-events-none absolute right-0 top-0 h-full w-16 bg-gradient-to-l from-background to-transparent" />
+    </div>
+  );
+}
+
 export default function Works() {
   const categories = Object.keys(worksData) as Category[];
   const [activeTab, setActiveTab] = useState<Category>(categories[0]);
 
   return (
-    <section id="works" className="py-32 px-6 lg:px-12 w-full max-w-7xl mx-auto">
-      <motion.div 
+    <section id="works" className="py-32 w-full max-w-7xl mx-auto px-6 lg:px-12">
+      <motion.div
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, amount: 0.1 }}
@@ -38,8 +63,8 @@ export default function Works() {
               key={cat}
               onClick={() => setActiveTab(cat)}
               className={`px-5 py-2.5 text-xs sm:text-sm font-medium tracking-wider uppercase rounded-full transition-all duration-300 ${
-                activeTab === cat 
-                  ? 'bg-primary text-primary-foreground' 
+                activeTab === cat
+                  ? 'bg-primary text-primary-foreground'
                   : 'bg-card text-muted-foreground border border-card-border hover:border-primary/50 hover:text-foreground'
               }`}
             >
@@ -49,32 +74,19 @@ export default function Works() {
         </motion.div>
       </motion.div>
 
-      <motion.div layout className="min-h-[500px]">
+      <div className="min-h-[400px]">
         <AnimatePresence mode="wait">
           <motion.div
             key={activeTab}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.5, ease: "easeOut" }}
-            className={`grid gap-4 ${
-              activeTab === 'REELS' || activeTab === 'PROMOTIONAL VIDEOS'
-                ? 'grid-cols-1 sm:grid-cols-2 md:grid-cols-3'
-                : 'grid-cols-1 md:grid-cols-[1fr_1fr_1.5fr]'
-            }`}
+            transition={{ duration: 0.4, ease: 'easeOut' }}
           >
-            {worksData[activeTab].map((work) => (
-              <div key={work.id} className="h-full">
-                <VideoCard
-                  title={work.title}
-                  category={work.category}
-                  type={work.type}
-                />
-              </div>
-            ))}
+            <HorizontalRow items={worksData[activeTab]} />
           </motion.div>
         </AnimatePresence>
-      </motion.div>
+      </div>
     </section>
   );
 }

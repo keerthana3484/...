@@ -103,12 +103,31 @@
     @apply border-border;
   }
 
-  html { scroll-behavior: smooth; }
+  html { scroll-behavior: smooth; overflow-x: hidden; }
   body { 
     background: #090909; 
     color: hsl(45 20% 88%); 
-    cursor: none; 
+    cursor: none;
+    overflow-x: hidden;
     @apply font-sans antialiased;
+  }
+
+  /* Hide scrollbar on horizontal scroll carousels */
+  .scroll-row {
+    display: flex;
+    flex-direction: row;
+    overflow-x: auto;
+    overflow-y: visible;
+    gap: 1rem;
+    padding-bottom: 1rem;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .scroll-row::-webkit-scrollbar { display: none; }
+  .scroll-row > * {
+    scroll-snap-align: start;
+    flex-shrink: 0;
   }
   ::selection { background: hsl(38 60% 55% / 0.3); color: hsl(45 20% 88%); }
 

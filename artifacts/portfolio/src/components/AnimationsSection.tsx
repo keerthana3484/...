@@ -16,20 +16,35 @@ const twoD = [
   { id: 2, title: 'Liquid Geometry', category: '2D Animation', type: '16:9' as const }
 ];
 
-const titles = [
-  { id: 3, title: 'Cinematic Opening', category: 'Title Animation', type: '9:16' as const }
-];
-
-const textAnim = [
+const titlesAndText = [
+  { id: 3, title: 'Cinematic Opening', category: 'Title Animation', type: '9:16' as const },
   { id: 4, title: 'Glitch Type', category: 'Text Animation', type: '9:16' as const },
   { id: 5, title: 'Kinetic Words', category: 'Text Animation', type: '9:16' as const },
   { id: 6, title: 'Fade Reveal', category: 'Text Animation', type: '9:16' as const }
 ];
 
+function HorizontalRow({ items }: { items: { id: number; title: string; category: string; type: '9:16' | '16:9' }[] }) {
+  return (
+    <div className="relative">
+      <div className="scroll-row">
+        {items.map((item) => (
+          <div
+            key={item.id}
+            className={item.type === '9:16' ? 'w-[220px] sm:w-[260px]' : 'w-[340px] sm:w-[440px]'}
+          >
+            <VideoCard title={item.title} category={item.category} type={item.type} />
+          </div>
+        ))}
+      </div>
+      <div className="pointer-events-none absolute right-0 top-0 h-full w-16 bg-gradient-to-l from-background to-transparent" />
+    </div>
+  );
+}
+
 export default function AnimationsSection() {
   return (
-    <section id="animations" className="py-32 px-6 lg:px-12 w-full max-w-7xl mx-auto">
-      <motion.div 
+    <section id="animations" className="py-32 w-full max-w-7xl mx-auto px-6 lg:px-12">
+      <motion.div
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, amount: 0.1 }}
@@ -44,7 +59,7 @@ export default function AnimationsSection() {
         </motion.p>
       </motion.div>
 
-      <div className="space-y-24">
+      <div className="space-y-20">
         {/* 2D Animations */}
         <motion.div
           initial="hidden"
@@ -52,34 +67,19 @@ export default function AnimationsSection() {
           viewport={{ once: true, amount: 0.1 }}
           variants={stagger}
         >
-          <motion.h3 variants={fadeUp} className="text-xl font-serif mb-8 text-foreground/80">2D Animation</motion.h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {twoD.map(item => (
-              <motion.div key={item.id} variants={fadeUp}>
-                <VideoCard {...item} />
-              </motion.div>
-            ))}
-          </div>
+          <motion.h3 variants={fadeUp} className="text-xl font-serif mb-6 text-foreground/80">2D Animation</motion.h3>
+          <HorizontalRow items={twoD} />
         </motion.div>
 
-        {/* Title & Text Combined Grid for nice layout */}
+        {/* Titles & Text */}
         <motion.div
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, amount: 0.1 }}
           variants={stagger}
         >
-          <motion.h3 variants={fadeUp} className="text-xl font-serif mb-8 text-foreground/80">Titles & Typography</motion.h3>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
-            <motion.div variants={fadeUp} className="col-span-1">
-              <VideoCard {...titles[0]} />
-            </motion.div>
-            {textAnim.map(item => (
-              <motion.div key={item.id} variants={fadeUp} className="col-span-1">
-                <VideoCard {...item} />
-              </motion.div>
-            ))}
-          </div>
+          <motion.h3 variants={fadeUp} className="text-xl font-serif mb-6 text-foreground/80">Titles & Typography</motion.h3>
+          <HorizontalRow items={titlesAndText} />
         </motion.div>
       </div>
     </section>
