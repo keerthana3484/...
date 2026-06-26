@@ -34,7 +34,7 @@ export default function VFXSection() {
         variants={stagger}
       >
         <div className="relative">
-          <div className="scroll-row" style={{ height: '480px' }}>
+          <div className="scroll-row scroll-row-video">
             {vfxData.map((item) => (
               <motion.div
                 key={item.id}

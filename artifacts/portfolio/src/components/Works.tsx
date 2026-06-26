@@ -20,7 +20,7 @@ function HorizontalRow({ items }: { items: typeof worksData[Category] }) {
 
   return (
     <div className="relative">
-      <div ref={rowRef} className="scroll-row" style={{ height: '480px' }}>
+      <div ref={rowRef} className="scroll-row scroll-row-video">
         {items.map((work) => (
           <div key={work.id} className="h-full flex-shrink-0">
             <VideoCard

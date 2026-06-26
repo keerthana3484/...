@@ -15,7 +15,7 @@ const stagger = {
 function HorizontalRow({ items }: { items: AnimationItem[] }) {
   return (
     <div className="relative">
-      <div className="scroll-row" style={{ height: '480px' }}>
+      <div className="scroll-row scroll-row-video">
         {items.map((item) => (
           <div key={item.id} className="h-full flex-shrink-0">
             <VideoCard

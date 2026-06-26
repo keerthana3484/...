@@ -129,6 +129,17 @@
     scroll-snap-align: start;
     flex-shrink: 0;
   }
+
+  /* Responsive video row heights — landscape cards auto-size their width from this */
+  .scroll-row-video {
+    height: 200px;   /* mobile: 16:9 card ≈ 355px wide, fits ~90% of screen */
+  }
+  @media (min-width: 640px) {
+    .scroll-row-video { height: 340px; }
+  }
+  @media (min-width: 1024px) {
+    .scroll-row-video { height: 480px; } /* desktop — unchanged */
+  }
   ::selection { background: hsl(38 60% 55% / 0.3); color: hsl(45 20% 88%); }
 
   /* Film grain overlay */
