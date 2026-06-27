@@ -21,7 +21,7 @@ const tools = [
   },
   {
     name: 'Premiere Pro',
-    description: 'Video Editing',
+    description: 'Video Editing & SFX',
     logo: '/premiere-pro.png',
     color: '#E0A0FF',
     bgColor: 'rgba(224,160,255,0.08)',
