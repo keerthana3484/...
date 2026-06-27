@@ -9,22 +9,22 @@ export type WorkItem = {
 
 export const worksData: Record<string, WorkItem[]> = {
   REELS: [
-    { id: 1, title: 'Velocity Cuts', category: 'Reel', type: '9:16', src: undefined },
-    { id: 2, title: 'Neon Dusk', category: 'Reel', type: '9:16', src: undefined },
-    { id: 3, title: 'Golden Hour', category: 'Reel', type: '9:16', src: undefined },
+    { id: 1, title: 'After Video', category: 'Reel', type: '9:16', src: '/videos/Irizz_final.mp4' },
+    { id: 2, title: 'Celebration Videos', category: 'Reel', type: '9:16', src: '/videos/Pongal_2k25.mp4' },
+    { id: 3, title: 'Moments to remember', category: 'Reel', type: '9:16', src: '/videos/nalangu.mp4' },
   ],
   'PROMOTIONAL VIDEOS': [
-    { id: 4, title: 'Luminary Launch', category: 'Promo', type: '9:16', src: undefined },
-    { id: 5, title: 'Pulse Campaign', category: 'Promo', type: '9:16', src: undefined },
+    { id: 4, title: 'Luminary Launch', category: 'Promo', type: '9:16', src: '/videos/Halloween_Aftervideo.mp4' },
+    { id: 5, title: 'Pulse Campaign', category: 'Promo', type: '9:16', src: '/videos/Face Video.mp4' },
     { id: 6, title: 'Ethereal Brand Film', category: 'Promo', type: '9:16', src: undefined },
   ],
   'CONCERT EDITS': [
     { id: 7, title: 'Sana-The One', category: 'Concert', type: '16:9', src: '/videos/Sana 1.mp4' },
-    { id: 8, title: 'Amplify Sessions', category: 'Concert', type: '9:16', src: undefined },
-    { id: 9, title: 'Stage Odyssey', category: 'Concert', type: '9:16', src: undefined },
+    { id: 8, title: 'Jonita Gandhi', category: 'Concert', type: '9:16', src: '/videos/Jonita_NIT.mp4' },
+    { id: 9, title: 'Rare Piece Vanjaram', category: 'Concert', type: '9:16', src: '/videos/Rare Piece Vanjaram .mp4' },
   ],
   'CULTURAL PROMOS': [
-    { id: 10, title: 'Heritage Unveiled', category: 'Cultural', type: '9:16', src: undefined },
+    { id: 10, title: 'Concert Promo', category: 'Cultural', type: '9:16', src: '/videos/Sana_Pranesh.mp4' },
     { id: 11, title: 'Festival of Light', category: 'Cultural', type: '9:16', src: undefined },
     { id: 12, title: 'Roots & Rhythm', category: 'Cultural', type: '16:9', src: undefined },
   ],

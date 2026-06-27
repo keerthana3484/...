@@ -2,7 +2,7 @@ import { motion } from 'framer-motion';
 
 const fadeUp = {
   hidden: { opacity: 0, y: 40, filter: 'blur(10px)' },
-  visible: { opacity: 1, y: 0, filter: 'blur(0px)', transition: { duration: 0.8, ease: [0.25, 0.46, 0.45, 0.94] } }
+  visible: { opacity: 1, y: 0, filter: 'blur(0px)', transition: { duration: 0.8, ease: [0.25, 0.46, 0.45, 0.94] as const } }
 };
 
 const stagger = {
@@ -28,12 +28,28 @@ const tools = [
     borderColor: 'rgba(224,160,255,0.2)',
   },
   {
+    name: 'Blender',
+    description: '3D Modeling & VFX',
+    logo: '/blender.png',
+    color: '#E87D0D',
+    bgColor: 'rgba(232,125,13,0.08)',
+    borderColor: 'rgba(232,125,13,0.2)',
+  },
+  {
     name: 'Photoshop',
     description: 'Design & Compositing',
     logo: '/photoshop.png',
     color: '#31A8FF',
     bgColor: 'rgba(49,168,255,0.08)',
     borderColor: 'rgba(49,168,255,0.2)',
+  },
+  {
+    name: 'Illustrator',
+    description: 'Vector Graphics & Assets',
+    logo: '/illustrator.png',
+    color: '#FF9A00',
+    bgColor: 'rgba(255,154,0,0.08)',
+    borderColor: 'rgba(255,154,0,0.2)',
   },
 ];
 

@@ -9,7 +9,7 @@ import {
 
 const fadeUp = {
   hidden: { opacity: 0, y: 60, filter: 'blur(10px)' },
-  visible: { opacity: 1, y: 0, filter: 'blur(0px)', transition: { duration: 1, ease: [0.25, 0.46, 0.45, 0.94] } }
+  visible: { opacity: 1, y: 0, filter: 'blur(0px)', transition: { duration: 1, ease: [0.25, 0.46, 0.45, 0.94] as const } }
 };
 
 const stagger = {
@@ -25,7 +25,7 @@ const skills = [
   { icon: Briefcase, label: 'Branding Content' }
 ];
 
-const software = ['After Effects', 'Premiere Pro', 'Photoshop'];
+const software = ['After Effects', 'Premiere Pro', 'Blender', 'Photoshop', 'Illustrator'];
 
 export default function About() {
   return (

@@ -14,7 +14,7 @@ export const twoDAnimations: AnimationItem[] = [
 ];
 
 export const titleAnimations: AnimationItem[] = [
-  { id: 3, title: 'Cinematic Opening', category: 'Title Animation', type: '9:16', src: undefined },
+  { id: 3, title: 'Cinematic Opening', category: 'Title Animation', type: '9:16', src: '/videos/VSR_1.mp4' },
 ];
 
 export const Motionposter: AnimationItem[] = [

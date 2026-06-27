@@ -2,9 +2,34 @@ import { useEffect, useRef } from 'react';
 import { useScroll, useTransform, useMotionValueEvent } from 'framer-motion';
 
 // ─── Constants ────────────────────────────────────────────────────────────────
-const R   = 155;   // Globe radius in canvas px
+const R   = 115;   // Saturn radius in canvas px
 const FOV = 500;
 const BR  = 193; const BG = 148; const BB = 72; // bronze RGB
+
+const RING_INC = 22 * (Math.PI / 180);  // Tilt Saturn's equator and rings towards viewer
+const AXIS_TILT = -15 * (Math.PI / 180); // Tilt Saturn's axis sideways
+
+const RINGS_DATA = [
+  // Inner C Ring (faint)
+  { r: R * 1.30, lw: 0.5, op: 0.12, dash: false },
+  { r: R * 1.36, lw: 0.8, op: 0.15, dash: false },
+  { r: R * 1.42, lw: 1.0, op: 0.20, dash: false },
+  // Middle B Ring (bright, dense)
+  { r: R * 1.50, lw: 1.5, op: 0.40, dash: false },
+  { r: R * 1.56, lw: 2.0, op: 0.50, dash: false },
+  { r: R * 1.62, lw: 2.5, op: 0.55, dash: false },
+  { r: R * 1.68, lw: 1.8, op: 0.45, dash: false },
+  { r: R * 1.74, lw: 1.2, op: 0.35, dash: false },
+  // Cassini Division (empty space around 1.80)
+  // Outer A Ring
+  { r: R * 1.84, lw: 1.5, op: 0.35, dash: false },
+  { r: R * 1.90, lw: 2.0, op: 0.40, dash: false },
+  { r: R * 1.96, lw: 1.0, op: 0.30, dash: false },
+  // Encke Gap / Outer F Ring (faint, dashed)
+  { r: R * 2.04, lw: 0.5, op: 0.15, dash: true },
+  { r: R * 2.12, lw: 0.8, op: 0.25, dash: true },
+  { r: R * 2.20, lw: 0.4, op: 0.10, dash: false }
+];
 
 // ─── Math helpers ─────────────────────────────────────────────────────────────
 function ll2xyz(lat: number, lon: number, r = R): [number, number, number] {
@@ -15,6 +40,24 @@ function ll2xyz(lat: number, lon: number, r = R): [number, number, number] {
 
 function rotY(x: number, y: number, z: number, a: number): [number, number, number] {
   return [x * Math.cos(a) - z * Math.sin(a), y, x * Math.sin(a) + z * Math.cos(a)];
+}
+
+function tiltX(x: number, y: number, z: number, a: number): [number, number, number] {
+  const c = Math.cos(a), s = Math.sin(a);
+  return [x, y * c - z * s, y * s + z * c];
+}
+
+function rotZ(x: number, y: number, z: number, a: number): [number, number, number] {
+  const c = Math.cos(a), s = Math.sin(a);
+  return [x * c - y * s, x * s + y * c, z];
+}
+
+// Combined transformation for any point on the planet or rings
+function transform3D(x: number, y: number, z: number, rot: number): [number, number, number] {
+  const [x1, y1, z1] = rotY(x, y, z, rot);
+  const [x2, y2, z2] = tiltX(x1, y1, z1, RING_INC);
+  const [x3, y3, z3] = rotZ(x2, y2, z2, AXIS_TILT);
+  return [x3, y3, z3];
 }
 
 function persp(x: number, y: number, z: number): [number, number] {
@@ -28,29 +71,20 @@ function depthFade(z: number): number {
   return Math.max(0, 1 - z / (R * 0.9));
 }
 
-// Arrow orbital path (inclined 30° great circle)
-const INC = 30 * (Math.PI / 180);
-function orbitXYZ(t: number, r = R): [number, number, number] {
-  return [r * Math.cos(t), r * Math.sin(t) * Math.sin(INC), r * Math.sin(t) * Math.cos(INC)];
+function isOccluded(p: [number, number, number]): boolean {
+  const [x, y, z] = p;
+  if (z <= 0) return false;
+  const [px, py] = persp(x, y, z);
+  const dist2D = Math.hypot(px, py);
+  const projR = R * (FOV / (FOV + z));
+  return dist2D < projR * 0.98;
 }
 
-// ─── Simplified continent outlines: [lon, lat][] ──────────────────────────────
-const CONTINENTS: [number, number][][] = [
-  // North America
-  [[-168,70],[-155,72],[-140,70],[-130,72],[-115,73],[-100,74],[-78,72],[-65,63],[-60,60],[-55,55],[-55,50],[-60,47],[-67,45],[-70,43],[-76,37],[-80,35],[-82,30],[-80,25],[-75,22],[-70,20],[-65,18],[-60,15],[-52,4],[-50,15],[-60,4],[-75,10],[-77,8],[-83,10],[-88,16],[-110,23],[-117,32],[-124,48],[-130,54],[-140,60],[-168,70]],
-  // South America
-  [[-80,8],[-78,4],[-78,0],[-75,-10],[-70,-20],[-72,-30],[-73,-42],[-68,-55],[-56,-55],[-50,-50],[-42,-38],[-44,-33],[-43,-28],[-40,-23],[-38,-18],[-35,-12],[-38,-8],[-50,-5],[-52,0],[-50,4],[-62,11],[-75,12],[-80,8]],
-  // Europe
-  [[-10,36],[-9,43],[-2,43],[-5,48],[2,57],[5,65],[10,72],[20,72],[26,68],[25,60],[20,55],[22,49],[27,46],[32,47],[28,38],[15,38],[3,37],[-10,36]],
-  // Africa
-  [[-18,16],[-15,12],[-10,4],[-5,5],[0,6],[5,5],[10,-5],[12,-18],[15,-28],[17,-35],[26,-35],[31,-30],[35,-20],[40,-12],[41,-2],[45,5],[50,12],[44,12],[43,22],[35,30],[25,37],[10,37],[-5,36],[-12,32],[-17,25],[-18,16]],
-  // Asia (Eurasia east of Europe)
-  [[27,41],[32,41],[38,37],[44,34],[50,30],[56,28],[57,24],[62,25],[68,22],[75,8],[80,10],[88,22],[92,27],[100,26],[105,20],[114,22],[118,22],[122,14],[118,5],[110,0],[104,1],[100,5],[105,12],[110,22],[120,25],[125,32],[130,38],[135,45],[140,50],[145,60],[140,70],[120,72],[100,73],[80,75],[60,73],[35,65],[28,56],[30,50],[27,41]],
-  // Australia
-  [[114,-22],[118,-20],[124,-16],[130,-14],[136,-12],[143,-10],[148,-14],[152,-18],[154,-24],[152,-30],[148,-38],[140,-38],[138,-35],[132,-36],[130,-33],[124,-34],[118,-38],[115,-34],[114,-22]],
-  // Greenland (simplified)
-  [[-45,82],[-20,78],[-14,78],[-18,73],[-24,68],[-50,68],[-56,72],[-52,78],[-45,82]],
-];
+// Inclined orbit path relative to Saturn's equator
+function orbitXYZ(t: number, r = R * 2.45): [number, number, number] {
+  const INC = 35 * (Math.PI / 180);
+  return [r * Math.cos(t), r * Math.sin(t) * Math.sin(INC), r * Math.sin(t) * Math.cos(INC)];
+}
 
 // ─── Component ────────────────────────────────────────────────────────────────
 export default function HologramGlobe() {
@@ -71,7 +105,7 @@ export default function HologramGlobe() {
   useMotionValueEvent(scrollYProgress, 'change', v => { progRef.current = v; });
 
   useEffect(() => {
-    const canvas = canvasRef.current;
+    const canvas = canvasRef.current!;
     if (!canvas) return;
     const ctx = canvas.getContext('2d')!;
     const CX = canvas.width / 2;
@@ -111,72 +145,85 @@ export default function HologramGlobe() {
       ctx.translate(CX, CY);
       ctx.scale(sc, sc);
 
-      // ── Latitude grid lines (every 30°) ───────────────────────
-      for (let lat = -60; lat <= 60; lat += 30) {
+      // ── Saturn's Cloud Bands (Latitude lines of varying width & opacity) ─────
+      const latitudes = [
+        { lat: -75, lw: 0.6, op: 0.15 },
+        { lat: -60, lw: 0.8, op: 0.20 },
+        { lat: -45, lw: 1.2, op: 0.25 },
+        { lat: -30, lw: 2.2, op: 0.40 }, // Thick belt
+        { lat: -15, lw: 0.8, op: 0.20 },
+        { lat: 0,   lw: 2.5, op: 0.45 }, // Equator belt
+        { lat: 15,  lw: 0.8, op: 0.20 },
+        { lat: 30,  lw: 2.2, op: 0.40 }, // Thick belt
+        { lat: 45,  lw: 1.2, op: 0.25 },
+        { lat: 60,  lw: 0.8, op: 0.20 },
+        { lat: 75,  lw: 0.6, op: 0.15 }
+      ];
+
+      for (const band of latitudes) {
         const STEPS = 72;
         for (let j = 0; j < STEPS; j++) {
           const l1 = -180 + (j / STEPS) * 360;
           const l2 = -180 + ((j + 1) / STEPS) * 360;
-          const p1 = rotY(...ll2xyz(lat, l1), rot);
-          const p2 = rotY(...ll2xyz(lat, l2), rot);
-          seg(p1, p2, alpha * 0.20, `rgb(${BR},${BG},${BB})`, 0.4);
+          const p1 = transform3D(...ll2xyz(band.lat, l1), rot);
+          const p2 = transform3D(...ll2xyz(band.lat, l2), rot);
+          seg(p1, p2, alpha * band.op, `rgb(${BR},${BG},${BB})`, band.lw);
         }
       }
 
-      // ── Longitude grid lines (every 30°) ──────────────────────
-      for (let lon = 0; lon < 360; lon += 30) {
-        const STEPS = 48;
+      // ── Saturn's rotation grid (faint longitude lines) ───────────────────────
+      for (let lon = 0; lon < 360; lon += 45) {
+        const STEPS = 36;
         for (let j = 0; j < STEPS; j++) {
           const la1 = -90 + (j / STEPS) * 180;
           const la2 = -90 + ((j + 1) / STEPS) * 180;
-          const p1 = rotY(...ll2xyz(la1, lon), rot);
-          const p2 = rotY(...ll2xyz(la2, lon), rot);
-          seg(p1, p2, alpha * 0.20, `rgb(${BR},${BG},${BB})`, 0.4);
+          const p1 = transform3D(...ll2xyz(la1, lon), rot);
+          const p2 = transform3D(...ll2xyz(la2, lon), rot);
+          seg(p1, p2, alpha * 0.08, `rgb(${BR},${BG},${BB})`, 0.3);
         }
       }
 
-      // ── Continent outlines ─────────────────────────────────────
-      for (const outline of CONTINENTS) {
-        for (let i = 0; i < outline.length - 1; i++) {
-          const [lo1, la1] = outline[i];
-          const [lo2, la2] = outline[i + 1];
-          const p1 = rotY(...ll2xyz(la1, lo1), rot);
-          const p2 = rotY(...ll2xyz(la2, lo2), rot);
-          // Skip edges that jump across globe (long segments)
-          const dist = Math.hypot(lo2 - lo1, la2 - la1);
-          if (dist > 40) continue;
-          seg(p1, p2, alpha * 0.80, `rgb(${BR},${BG},${BB})`, 1.3,
-              `rgb(${BR},${BG},${BB})`, 4);
+      // ── Saturn's Rings ───────────────────────────────────────────────────────
+      for (const ring of RINGS_DATA) {
+        const STEPS = 120;
+        for (let j = 0; j < STEPS; j++) {
+          if (ring.dash && j % 6 >= 4) continue;
+          const t1 = (j / STEPS) * Math.PI * 2;
+          const t2 = ((j + 1) / STEPS) * Math.PI * 2;
+          
+          // Spin rings with Keplerian velocity
+          const ringRot = rot * (1.2 / Math.sqrt(ring.r / R));
+          const p1 = transform3D(ring.r * Math.cos(t1), 0, ring.r * Math.sin(t1), ringRot);
+          const p2 = transform3D(ring.r * Math.cos(t2), 0, ring.r * Math.sin(t2), ringRot);
+
+          // Render only if not occluded by planet body
+          if (isOccluded(p1) && isOccluded(p2)) continue;
+          
+          seg(p1, p2, alpha * ring.op, `rgb(${BR},${BG},${BB})`, ring.lw);
         }
       }
 
-      // ── Equator ───────────────────────────────────────────────
-      const EQ = 96;
-      for (let j = 0; j < EQ; j++) {
-        const p1 = rotY(...ll2xyz(0, -180 + (j / EQ) * 360), rot);
-        const p2 = rotY(...ll2xyz(0, -180 + ((j + 1) / EQ) * 360), rot);
-        seg(p1, p2, alpha * 0.90, `rgb(${BR},${BG},${BB})`, 1.5,
-            `rgb(${BR},${BG},${BB})`, 12);
-      }
-
-      // ── Orbit path (dashed tilted great circle) ────────────────
+      // ── Orbit path (dashed tilted outer circle) ──────────────────────────────
       const OP = 120;
       for (let j = 0; j < OP; j++) {
         if (j % 4 === 3) continue; // dashed
         const t1 = (j / OP) * Math.PI * 2;
         const t2 = ((j + 1) / OP) * Math.PI * 2;
-        const p1 = rotY(...orbitXYZ(t1), rot);
-        const p2 = rotY(...orbitXYZ(t2), rot);
+        const p1 = transform3D(...orbitXYZ(t1), rot);
+        const p2 = transform3D(...orbitXYZ(t2), rot);
+        
+        if (isOccluded(p1) && isOccluded(p2)) continue;
         seg(p1, p2, alpha * 0.35, `rgb(${BR},${BG},${BB})`, 0.7);
       }
 
-      // ── Arrow trail ───────────────────────────────────────────
-      const arrowT = prog * Math.PI * 6; // 3 full orbits across the page
+      // ── Arrow trail ──────────────────────────────────────────────────────────
+      const arrowT = prog * Math.PI * 6; // 3 full orbits
       const TRAIL = 24;
       for (let k = TRAIL; k >= 1; k--) {
         const tT = arrowT - k * 0.045;
-        const [tx, ty, tz] = rotY(...orbitXYZ(tT), rot);
-        if (tz > R * 0.8) continue;
+        const p = transform3D(...orbitXYZ(tT), rot);
+        if (isOccluded(p)) continue;
+        const [tx, ty, tz] = p;
         const fade = depthFade(tz);
         const [px, py] = persp(tx, ty, tz);
         const ta = (1 - k / TRAIL) * alpha * 0.8 * fade;
@@ -187,15 +234,15 @@ export default function HologramGlobe() {
         ctx.fill();
       }
 
-      // ── Arrow head ────────────────────────────────────────────
-      const [ax, ay, az] = rotY(...orbitXYZ(arrowT), rot);
-      if (az <= R * 0.75) {
+      // ── Arrow head ───────────────────────────────────────────────────────────
+      const ap = transform3D(...orbitXYZ(arrowT), rot);
+      if (!isOccluded(ap)) {
+        const [ax, ay, az] = ap;
         const fade = depthFade(az);
         const [px, py] = persp(ax, ay, az);
 
-        // Tangent direction for arrow heading
-        const [ax2, ay2, az2] = rotY(...orbitXYZ(arrowT + 0.015), rot);
-        const [px2, py2] = persp(ax2, ay2, az2);
+        const ap2 = transform3D(...orbitXYZ(arrowT + 0.015), rot);
+        const [px2, py2] = persp(ap2[0], ap2[1], ap2[2]);
         const angle = Math.atan2(py2 - py, px2 - px);
 
         ctx.save();
@@ -205,17 +252,15 @@ export default function HologramGlobe() {
         ctx.shadowColor = `rgba(${BR},${BG},${BB},1)`;
         ctx.shadowBlur = 22;
 
-        // Arrow shape: a playhead chevron
         ctx.beginPath();
-        ctx.moveTo(12, 0);      // tip
-        ctx.lineTo(-7, -6);     // left wing
-        ctx.lineTo(-4, 0);      // notch
-        ctx.lineTo(-7, 6);      // right wing
+        ctx.moveTo(12, 0);
+        ctx.lineTo(-7, -6);
+        ctx.lineTo(-4, 0);
+        ctx.lineTo(-7, 6);
         ctx.closePath();
         ctx.fillStyle = `rgb(${BR},${BG},${BB})`;
         ctx.fill();
 
-        // Small line underneath (like a timeline playhead stem)
         ctx.beginPath();
         ctx.moveTo(0, 6);
         ctx.lineTo(0, 14);
@@ -228,10 +273,11 @@ export default function HologramGlobe() {
         ctx.restore();
       }
 
-      // ── Pole dots ─────────────────────────────────────────────
-      for (const pole of [[0, 0, R], [0, 0, -R]] as const) {
-        const [px, py, pz] = rotY(pole[0], pole[1], pole[2], rot);
-        if (pz > R * 0.8) continue;
+      // ── Pole dots ────────────────────────────────────────────────────────────
+      for (const pole of [[0, R, 0], [0, -R, 0]] as const) {
+        const p = transform3D(pole[0], pole[1], pole[2], rot);
+        if (isOccluded(p)) continue;
+        const [px, py, pz] = p;
         const [sx, sy] = persp(px, py, pz);
         ctx.beginPath();
         ctx.arc(sx, sy, 3, 0, Math.PI * 2);
@@ -242,7 +288,7 @@ export default function HologramGlobe() {
         ctx.shadowBlur = 0;
       }
 
-      // ── Atmospheric limb glow ─────────────────────────────────
+      // ── Atmospheric limb glow ────────────────────────────────────────────────
       const limb = ctx.createRadialGradient(0, 0, R * 0.82, 0, 0, R * 1.12);
       limb.addColorStop(0,   `rgba(${BR},${BG},${BB},0)`);
       limb.addColorStop(0.5, `rgba(${BR},${BG},${BB},${alpha * 0.07})`);

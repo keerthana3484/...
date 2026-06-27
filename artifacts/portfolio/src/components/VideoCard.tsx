@@ -4,13 +4,14 @@ import { Play, Volume2, VolumeX } from 'lucide-react';
 interface VideoCardProps {
   title: string;
   category: string;
-  type: '9:16' | '16:9';
+  type: '9:16' | '16:9' | '1:1';
   src?: string;
   thumbnail?: string;
 }
 
 export default function VideoCard({ title, category, type, src, thumbnail }: VideoCardProps) {
   const isPortrait = type === '9:16';
+  const isSquare = type === '1:1';
   const videoRef = useRef<HTMLVideoElement>(null);
   const [playing, setPlaying] = useState(false);
   const [muted, setMuted] = useState(true);
@@ -24,6 +25,7 @@ export default function VideoCard({ title, category, type, src, thumbnail }: Vid
 
   const handleMouseEnter = () => {
     if (src && videoRef.current) {
+      videoRef.current.currentTime = 0;
       videoRef.current.play().catch(() => {});
       setPlaying(true);
     }
@@ -32,7 +34,7 @@ export default function VideoCard({ title, category, type, src, thumbnail }: Vid
   const handleMouseLeave = () => {
     if (src && videoRef.current) {
       videoRef.current.pause();
-      videoRef.current.currentTime = 0;
+      videoRef.current.currentTime = 1.5;
       setPlaying(false);
       // Reset to muted so next hover starts muted
       setMuted(true);
@@ -46,7 +48,7 @@ export default function VideoCard({ title, category, type, src, thumbnail }: Vid
 
   return (
     <div
-      className={`group relative h-full overflow-hidden rounded-2xl bg-card border border-card-border cursor-pointer transition-transform duration-500 hover:scale-[1.02] ${isPortrait ? 'aspect-[9/16]' : 'aspect-video'} flex flex-col`}
+      className={`group relative h-full overflow-hidden rounded-2xl bg-card border border-card-border cursor-pointer transition-transform duration-500 hover:scale-[1.02] ${isPortrait ? 'aspect-[9/16]' : isSquare ? 'aspect-square' : 'aspect-video'} flex flex-col`}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
@@ -54,12 +56,12 @@ export default function VideoCard({ title, category, type, src, thumbnail }: Vid
       {src ? (
         <video
           ref={videoRef}
-          src={src}
+          src={src ? `${src}#t=1.5` : undefined}
           poster={thumbnail}
           muted
           loop
           playsInline
-          preload="none"
+          preload="auto"
           className="absolute inset-0 w-full h-full object-cover z-0"
         />
       ) : (

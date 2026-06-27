@@ -5,7 +5,7 @@ import { twoDAnimations, titleAnimations, Motionposter, AnimationItem } from '..
 
 const fadeUp = {
   hidden: { opacity: 0, y: 40, filter: 'blur(10px)' },
-  visible: { opacity: 1, y: 0, filter: 'blur(0px)', transition: { duration: 0.8, ease: [0.25, 0.46, 0.45, 0.94] } }
+  visible: { opacity: 1, y: 0, filter: 'blur(0px)', transition: { duration: 0.8, ease: [0.25, 0.46, 0.45, 0.94] as const } }
 };
 
 const stagger = {
@@ -78,7 +78,7 @@ export default function AnimationsSection() {
         </motion.div>
 
         <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.1 }} variants={stagger}>
-          <motion.h3 variants={fadeUp} className="text-xl font-serif mb-6 text-foreground/80">Motion Poster</motion.h3>
+          <motion.h3 variants={fadeUp} className="text-xl font-serif mb-6 text-foreground/80">Text Animations</motion.h3>
           <HorizontalRow items={Motionposter} />
         </motion.div>
       </div>
