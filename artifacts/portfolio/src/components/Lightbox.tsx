@@ -79,7 +79,7 @@ export default function Lightbox({ isOpen, onClose, onNext, onPrev, poster }: Li
                 className="absolute inset-0 w-full h-full object-cover"
               />
             ) : (
-              <div className={`absolute inset-0 bg-gradient-to-br ${poster.gradient}`} />
+              <div className="absolute inset-0" style={{ background: poster.gradient }} />
             )}
 
             {/* Bottom caption */}

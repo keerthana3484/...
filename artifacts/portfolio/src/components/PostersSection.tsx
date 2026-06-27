@@ -56,6 +56,7 @@ export default function PostersSection() {
               title={poster.title}
               category={poster.category}
               gradient={poster.gradient}
+              src={poster.src}
               onClick={() => setSelectedIndex(index)}
             />
           </motion.div>
