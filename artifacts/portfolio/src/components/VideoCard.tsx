@@ -1,5 +1,5 @@
-import { useRef, useState } from 'react';
-import { Play } from 'lucide-react';
+import { useRef, useState, useEffect } from 'react';
+import { Play, Volume2, VolumeX } from 'lucide-react';
 
 interface VideoCardProps {
   title: string;
@@ -13,6 +13,14 @@ export default function VideoCard({ title, category, type, src, thumbnail }: Vid
   const isPortrait = type === '9:16';
   const videoRef = useRef<HTMLVideoElement>(null);
   const [playing, setPlaying] = useState(false);
+  const [muted, setMuted] = useState(true);
+
+  // Sync muted state to the video DOM element (React's muted prop doesn't update reactively)
+  useEffect(() => {
+    if (videoRef.current) {
+      videoRef.current.muted = muted;
+    }
+  }, [muted]);
 
   const handleMouseEnter = () => {
     if (src && videoRef.current) {
@@ -26,7 +34,14 @@ export default function VideoCard({ title, category, type, src, thumbnail }: Vid
       videoRef.current.pause();
       videoRef.current.currentTime = 0;
       setPlaying(false);
+      // Reset to muted so next hover starts muted
+      setMuted(true);
     }
+  };
+
+  const toggleMute = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setMuted((prev) => !prev);
   };
 
   return (
@@ -48,7 +63,6 @@ export default function VideoCard({ title, category, type, src, thumbnail }: Vid
           className="absolute inset-0 w-full h-full object-cover z-0"
         />
       ) : (
-        /* Placeholder shimmer when no video is set */
         <div className="absolute inset-0 bg-gradient-to-br from-card to-muted animate-shimmer z-0" />
       )}
 
@@ -64,13 +78,28 @@ export default function VideoCard({ title, category, type, src, thumbnail }: Vid
       {/* Dark overlay on hover */}
       <div className="absolute inset-0 bg-primary/0 group-hover:bg-primary/10 transition-colors duration-500 z-10" />
 
-      {/* Play icon (shown when no video is playing) */}
+      {/* Play icon (shown when not playing) */}
       {(!playing || !src) && (
         <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-20 scale-90 group-hover:scale-100">
           <div className="w-16 h-16 rounded-full bg-background/80 backdrop-blur-md flex items-center justify-center border border-primary/30">
             <Play className="w-6 h-6 text-primary ml-1" fill="currentColor" />
           </div>
         </div>
+      )}
+
+      {/* Mute / Unmute button — shown while playing, top-right corner */}
+      {playing && src && (
+        <button
+          onClick={toggleMute}
+          className="absolute top-3 right-3 z-30 w-8 h-8 rounded-full bg-background/70 backdrop-blur-md flex items-center justify-center border border-primary/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 hover:bg-background/90 hover:border-primary/50"
+          aria-label={muted ? 'Unmute' : 'Mute'}
+        >
+          {muted ? (
+            <VolumeX className="w-4 h-4 text-primary" />
+          ) : (
+            <Volume2 className="w-4 h-4 text-primary" />
+          )}
+        </button>
       )}
 
       {/* Title & category */}
