@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { worksData } from '../data/worksData';
 import VideoCard from './VideoCard';
@@ -17,6 +17,16 @@ type Category = keyof typeof worksData;
 
 function HorizontalRow({ items }: { items: typeof worksData[Category] }) {
   const rowRef = useRef<HTMLDivElement>(null);
+  const [overflows, setOverflows] = useState(false);
+
+  useEffect(() => {
+    const el = rowRef.current;
+    if (!el) return;
+    const check = () => setOverflows(el.scrollWidth > el.clientWidth + 4);
+    check();
+    window.addEventListener('resize', check);
+    return () => window.removeEventListener('resize', check);
+  }, [items]);
 
   return (
     <div className="relative">
@@ -33,7 +43,9 @@ function HorizontalRow({ items }: { items: typeof worksData[Category] }) {
           </div>
         ))}
       </div>
-      <div className="pointer-events-none absolute right-0 top-0 h-full w-16 bg-gradient-to-l from-background to-transparent" />
+      {overflows && (
+        <div className="pointer-events-none absolute right-0 top-0 h-full w-16 bg-gradient-to-l from-background to-transparent" />
+      )}
     </div>
   );
 }

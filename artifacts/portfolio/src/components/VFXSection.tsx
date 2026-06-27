@@ -1,3 +1,4 @@
+import { useRef, useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import VideoCard from './VideoCard';
 import { vfxData } from '../data/vfxData';
@@ -13,6 +14,18 @@ const stagger = {
 };
 
 export default function VFXSection() {
+  const rowRef = useRef<HTMLDivElement>(null);
+  const [overflows, setOverflows] = useState(false);
+
+  useEffect(() => {
+    const el = rowRef.current;
+    if (!el) return;
+    const check = () => setOverflows(el.scrollWidth > el.clientWidth + 4);
+    check();
+    window.addEventListener('resize', check);
+    return () => window.removeEventListener('resize', check);
+  }, []);
+
   return (
     <section id="vfx" className="py-32 w-full max-w-7xl mx-auto px-6 lg:px-12">
       <motion.div
@@ -34,7 +47,7 @@ export default function VFXSection() {
         variants={stagger}
       >
         <div className="relative">
-          <div className="scroll-row scroll-row-video">
+          <div ref={rowRef} className="scroll-row scroll-row-video">
             {vfxData.map((item) => (
               <motion.div
                 key={item.id}
@@ -51,7 +64,9 @@ export default function VFXSection() {
               </motion.div>
             ))}
           </div>
-          <div className="pointer-events-none absolute right-0 top-0 h-full w-16 bg-gradient-to-l from-background to-transparent" />
+          {overflows && (
+            <div className="pointer-events-none absolute right-0 top-0 h-full w-16 bg-gradient-to-l from-background to-transparent" />
+          )}
         </div>
       </motion.div>
     </section>

@@ -1,3 +1,4 @@
+import { useRef, useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import VideoCard from './VideoCard';
 import { twoDAnimations, titleAnimations, Motionposter, AnimationItem } from '../data/animationsData';
@@ -13,9 +14,21 @@ const stagger = {
 };
 
 function HorizontalRow({ items }: { items: AnimationItem[] }) {
+  const rowRef = useRef<HTMLDivElement>(null);
+  const [overflows, setOverflows] = useState(false);
+
+  useEffect(() => {
+    const el = rowRef.current;
+    if (!el) return;
+    const check = () => setOverflows(el.scrollWidth > el.clientWidth + 4);
+    check();
+    window.addEventListener('resize', check);
+    return () => window.removeEventListener('resize', check);
+  }, [items]);
+
   return (
     <div className="relative">
-      <div className="scroll-row scroll-row-video">
+      <div ref={rowRef} className="scroll-row scroll-row-video">
         {items.map((item) => (
           <div key={item.id} className="h-full flex-shrink-0">
             <VideoCard
@@ -28,7 +41,9 @@ function HorizontalRow({ items }: { items: AnimationItem[] }) {
           </div>
         ))}
       </div>
-      <div className="pointer-events-none absolute right-0 top-0 h-full w-16 bg-gradient-to-l from-background to-transparent" />
+      {overflows && (
+        <div className="pointer-events-none absolute right-0 top-0 h-full w-16 bg-gradient-to-l from-background to-transparent" />
+      )}
     </div>
   );
 }
