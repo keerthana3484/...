@@ -112,6 +112,17 @@
     @apply font-sans antialiased;
   }
 
+  /* Restore native cursor while video fullscreen modal is open */
+  body.video-fullscreen-open {
+    cursor: auto;
+  }
+
+  body.video-fullscreen-open button,
+  body.video-fullscreen-open video,
+  body.video-fullscreen-open [role="button"] {
+    cursor: pointer;
+  }
+
   /* Hide scrollbar on horizontal scroll carousels */
   .scroll-row {
     display: flex;

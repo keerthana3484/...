@@ -10,6 +10,17 @@ export default function CustomCursor() {
   const cursorYSpring = useSpring(cursorY, springConfig);
 
   const [isHovered, setIsHovered] = useState(false);
+  const [videoFullscreenOpen, setVideoFullscreenOpen] = useState(false);
+
+  useEffect(() => {
+    const onVideoFullscreenChange = (e: Event) => {
+      const detail = (e as CustomEvent<{ open: boolean }>).detail;
+      setVideoFullscreenOpen(detail.open);
+    };
+
+    window.addEventListener('video-fullscreen-change', onVideoFullscreenChange);
+    return () => window.removeEventListener('video-fullscreen-change', onVideoFullscreenChange);
+  }, []);
 
   useEffect(() => {
     const moveCursor = (e: MouseEvent) => {
@@ -42,8 +53,11 @@ export default function CustomCursor() {
     };
   }, [cursorX, cursorY]);
 
-  // Hide cursor on touch devices
-  if (typeof window !== 'undefined' && window.matchMedia('(pointer: coarse)').matches) {
+  // Hide cursor on touch devices or while video fullscreen modal is open
+  if (
+    videoFullscreenOpen ||
+    (typeof window !== 'undefined' && window.matchMedia('(pointer: coarse)').matches)
+  ) {
     return null;
   }
 
