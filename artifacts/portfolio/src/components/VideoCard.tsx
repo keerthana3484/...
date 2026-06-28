@@ -15,6 +15,7 @@ export default function VideoCard({ title, category, type, src, thumbnail }: Vid
   const videoRef = useRef<HTMLVideoElement>(null);
   const [playing, setPlaying] = useState(false);
   const [muted, setMuted] = useState(true);
+  const [isFullscreen, setIsFullscreen] = useState(false);
 
   // Sync muted state to the video DOM element (React's muted prop doesn't update reactively)
   useEffect(() => {
@@ -23,8 +24,41 @@ export default function VideoCard({ title, category, type, src, thumbnail }: Vid
     }
   }, [muted]);
 
+  // Handle exiting fullscreen
+  useEffect(() => {
+    const handleFullscreenChange = () => {
+      const activeFS = !!(
+        document.fullscreenElement ||
+        (document as any).webkitIsFullScreen ||
+        (document as any).mozFullScreen ||
+        (document as any).msFullscreenElement
+      );
+
+      setIsFullscreen(activeFS);
+
+      if (!activeFS && videoRef.current) {
+        // Exited fullscreen: pause and mute
+        videoRef.current.pause();
+        setPlaying(false);
+        setMuted(true);
+      }
+    };
+
+    document.addEventListener('fullscreenchange', handleFullscreenChange);
+    document.addEventListener('webkitfullscreenchange', handleFullscreenChange);
+    document.addEventListener('mozfullscreenchange', handleFullscreenChange);
+    document.addEventListener('MSFullscreenChange', handleFullscreenChange);
+
+    return () => {
+      document.removeEventListener('fullscreenchange', handleFullscreenChange);
+      document.removeEventListener('webkitfullscreenchange', handleFullscreenChange);
+      document.removeEventListener('mozfullscreenchange', handleFullscreenChange);
+      document.removeEventListener('MSFullscreenChange', handleFullscreenChange);
+    };
+  }, []);
+
   const handleMouseEnter = () => {
-    if (src && videoRef.current) {
+    if (src && videoRef.current && !isFullscreen) {
       videoRef.current.currentTime = 0;
       videoRef.current.play().catch(() => {});
       setPlaying(true);
@@ -32,7 +66,7 @@ export default function VideoCard({ title, category, type, src, thumbnail }: Vid
   };
 
   const handleMouseLeave = () => {
-    if (src && videoRef.current) {
+    if (src && videoRef.current && !isFullscreen) {
       videoRef.current.pause();
       videoRef.current.currentTime = 1.5;
       setPlaying(false);
@@ -46,11 +80,28 @@ export default function VideoCard({ title, category, type, src, thumbnail }: Vid
     setMuted((prev) => !prev);
   };
 
+  const handleCardClick = () => {
+    if (src && videoRef.current) {
+      setMuted(false);
+      videoRef.current.play().catch(() => {});
+
+      const video = videoRef.current;
+      if (video.requestFullscreen) {
+        video.requestFullscreen();
+      } else if ((video as any).webkitRequestFullscreen) {
+        (video as any).webkitRequestFullscreen();
+      } else if ((video as any).webkitEnterFullscreen) {
+        (video as any).webkitEnterFullscreen();
+      }
+    }
+  };
+
   return (
     <div
       className={`group relative h-full overflow-hidden rounded-2xl bg-card border border-card-border cursor-pointer transition-transform duration-500 hover:scale-[1.02] ${isPortrait ? 'aspect-[9/16]' : isSquare ? 'aspect-square' : 'aspect-video'} flex flex-col`}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
+      onClick={handleCardClick}
     >
       {/* Video element */}
       {src ? (
@@ -62,6 +113,7 @@ export default function VideoCard({ title, category, type, src, thumbnail }: Vid
           loop
           playsInline
           preload="auto"
+          controls={isFullscreen}
           className="absolute inset-0 w-full h-full object-cover z-0"
         />
       ) : (
