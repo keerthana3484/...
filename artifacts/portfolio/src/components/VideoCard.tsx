@@ -8,9 +8,10 @@ interface VideoCardProps {
   type: '9:16' | '16:9' | '1:1';
   src?: string;
   thumbnail?: string;
+  previewStart?: number;
 }
 
-export default function VideoCard({ title, category, type, src, thumbnail }: VideoCardProps) {
+export default function VideoCard({ title, category, type, src, thumbnail, previewStart }: VideoCardProps) {
   const isPortrait = type === '9:16';
   const isSquare = type === '1:1';
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -36,7 +37,7 @@ export default function VideoCard({ title, category, type, src, thumbnail }: Vid
   const handleMouseLeave = () => {
     if (src && videoRef.current && !isFullscreen) {
       videoRef.current.pause();
-      videoRef.current.currentTime = 1.5;
+      videoRef.current.currentTime = previewStart ?? 3.0;
       setPlaying(false);
       setMuted(true);
     }
@@ -63,7 +64,7 @@ export default function VideoCard({ title, category, type, src, thumbnail }: Vid
     setPlaying(false);
     if (videoRef.current) {
       videoRef.current.pause();
-      videoRef.current.currentTime = 1.5;
+      videoRef.current.currentTime = previewStart ?? 3.0;
     }
   };
 
@@ -78,12 +79,12 @@ export default function VideoCard({ title, category, type, src, thumbnail }: Vid
         {src ? (
           <video
             ref={videoRef}
-            src={src ? `${src}#t=1.5` : undefined}
+            src={src ? `${src}#t=${previewStart ?? 3.0}` : undefined}
             poster={thumbnail}
             muted
             loop
             playsInline
-            preload="none"
+            preload="auto"
             className="absolute inset-0 w-full h-full object-cover z-0"
           />
         ) : (

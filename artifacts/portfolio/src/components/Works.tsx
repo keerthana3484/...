@@ -87,13 +87,18 @@ export default function Works() {
             <button
               key={cat}
               onClick={() => setActiveTab(cat)}
-              className={`px-6 py-2.5 text-[10px] sm:text-xs font-medium tracking-[0.2em] uppercase rounded-full transition-all duration-500 ${
+              className={`group relative px-6 py-2.5 text-[10px] sm:text-xs font-medium tracking-[0.2em] uppercase rounded-full border overflow-hidden transition-all duration-500 cursor-pointer ${
                 activeTab === cat
                   ? 'bg-foreground text-background border-transparent'
-                  : 'bg-transparent text-foreground/60 border border-white/10 hover:border-white/30 hover:text-foreground'
+                  : 'bg-transparent text-foreground/60 border-white/10 hover:border-transparent'
               }`}
             >
-              {cat}
+              {activeTab !== cat && (
+                <span className="absolute inset-0 w-full h-full bg-foreground rounded-full scale-0 group-hover:scale-100 transition-transform duration-500 ease-out origin-center" />
+              )}
+              <span className={`relative z-10 ${activeTab === cat ? '' : 'group-hover:text-background'} transition-colors duration-500`}>
+                {cat}
+              </span>
             </button>
           ))}
         </div>

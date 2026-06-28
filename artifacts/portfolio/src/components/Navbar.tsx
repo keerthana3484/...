@@ -54,14 +54,17 @@ export default function Navbar() {
           </div>
 
           {/* Center: Navigation (Desktop) */}
-          <div className="hidden lg:flex items-center justify-center gap-8">
+          <div className="hidden lg:flex items-center justify-center gap-3">
             {LINKS.map((link) => (
               <button
                 key={link.label}
                 onClick={() => scrollTo(link.href)}
-                className="text-xs uppercase tracking-[0.15em] text-foreground/70 hover:text-foreground transition-colors duration-300"
+                className="group relative flex items-center justify-center px-4 py-1.5 border border-foreground/20 text-foreground rounded-full text-[10px] font-medium tracking-widest uppercase overflow-hidden transition-all duration-700 ease-out hover:border-transparent cursor-pointer"
               >
-                {link.label}
+                <span className="absolute inset-0 w-full h-full bg-foreground rounded-full scale-0 group-hover:scale-100 transition-transform duration-500 ease-out origin-center" />
+                <span className="relative z-10 group-hover:text-background transition-colors duration-500">
+                  {link.label}
+                </span>
               </button>
             ))}
           </div>
@@ -69,7 +72,6 @@ export default function Navbar() {
           {/* Right: CTA Button & Mobile Menu Toggle */}
           <div className="flex justify-end items-center gap-4">
             
-            {/* CTA Button (Desktop) */}
             <button 
               onClick={() => scrollTo('#contact')}
               className="hidden lg:flex group relative items-center justify-center px-6 py-2 border border-foreground/20 text-foreground rounded-full text-xs font-medium tracking-widest uppercase overflow-hidden transition-all duration-700 ease-out hover:border-transparent cursor-pointer"
@@ -82,7 +84,7 @@ export default function Navbar() {
 
             {/* Mobile Menu Toggle */}
             <button 
-              className="lg:hidden text-foreground p-2 rounded-full border border-foreground/10 hover:bg-white/5 transition-colors"
+              className="lg:hidden text-foreground p-2 rounded-full border border-foreground/10 hover:bg-foreground hover:text-background transition-colors duration-300"
               onClick={() => setIsMobileMenuOpen(true)}
             >
               <Menu className="w-5 h-5" />
@@ -101,7 +103,7 @@ export default function Navbar() {
         <div className="flex flex-col h-full p-6">
           <div className="flex justify-end">
             <button 
-              className="p-3 text-foreground rounded-full border border-foreground/10 hover:bg-white/5 transition-colors"
+              className="p-3 text-foreground rounded-full border border-foreground/10 hover:bg-foreground hover:text-background transition-colors duration-300"
               onClick={() => setIsMobileMenuOpen(false)}
             >
               <X className="w-5 h-5" />
@@ -115,9 +117,12 @@ export default function Navbar() {
                 animate={{ opacity: isMobileMenuOpen ? 1 : 0, y: isMobileMenuOpen ? 0 : 20 }}
                 transition={{ delay: 0.1 * index, duration: 0.5, ease: 'easeOut' }}
                 onClick={() => scrollTo(link.href)}
-                className="text-3xl font-serif text-foreground/80 hover:text-foreground transition-colors"
+                className="group relative flex items-center justify-center px-8 py-3 border border-foreground/20 text-foreground rounded-full text-xs font-medium tracking-widest uppercase overflow-hidden transition-all duration-700 ease-out hover:border-transparent cursor-pointer w-full max-w-xs"
               >
-                {link.label}
+                <span className="absolute inset-0 w-full h-full bg-foreground rounded-full scale-0 group-hover:scale-100 transition-transform duration-500 ease-out origin-center" />
+                <span className="relative z-10 group-hover:text-background transition-colors duration-500">
+                  {link.label}
+                </span>
               </motion.button>
             ))}
             

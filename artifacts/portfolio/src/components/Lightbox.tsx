@@ -41,7 +41,7 @@ export default function Lightbox({ isOpen, onClose, onNext, onPrev, poster }: Li
           {/* Close */}
           <button
             onClick={onClose}
-            className="absolute top-6 right-6 p-3 text-muted-foreground hover:text-primary transition-colors rounded-full hover:bg-white/5"
+            className="absolute top-6 right-6 p-3 text-muted-foreground hover:text-background transition-colors rounded-full hover:bg-foreground duration-300"
           >
             <X className="w-6 h-6" />
           </button>
@@ -49,7 +49,7 @@ export default function Lightbox({ isOpen, onClose, onNext, onPrev, poster }: Li
           {/* Prev */}
           <button
             onClick={(e) => { e.stopPropagation(); onPrev(); }}
-            className="absolute left-4 md:left-12 p-4 text-muted-foreground hover:text-primary transition-colors rounded-full hover:bg-white/5"
+            className="absolute left-4 md:left-12 p-4 text-muted-foreground hover:text-background transition-colors rounded-full hover:bg-foreground duration-300"
           >
             <ChevronLeft className="w-8 h-8" />
           </button>
@@ -57,7 +57,7 @@ export default function Lightbox({ isOpen, onClose, onNext, onPrev, poster }: Li
           {/* Next */}
           <button
             onClick={(e) => { e.stopPropagation(); onNext(); }}
-            className="absolute right-4 md:right-12 p-4 text-muted-foreground hover:text-primary transition-colors rounded-full hover:bg-white/5"
+            className="absolute right-4 md:right-12 p-4 text-muted-foreground hover:text-background transition-colors rounded-full hover:bg-foreground duration-300"
           >
             <ChevronRight className="w-8 h-8" />
           </button>
