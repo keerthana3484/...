@@ -127,7 +127,7 @@ export default function VideoCard({ title, category, type, src, thumbnail, previ
         <div className="absolute inset-0 flex flex-col justify-end p-8 z-20 bg-gradient-to-t from-background/90 via-background/20 to-transparent opacity-80 group-hover:opacity-100 transition-opacity duration-500">
           <div className="translate-y-4 group-hover:translate-y-0 transition-transform duration-700 ease-out">
             <h3 className="text-xl sm:text-2xl font-serif text-foreground mb-3">{title}</h3>
-            <span className="inline-block px-3 py-1 text-[10px] font-medium uppercase tracking-[0.2em] text-foreground border border-white/20 rounded-full bg-white/5 backdrop-blur-sm">
+            <span className="inline-block px-3 py-1 text-[10px] font-mono uppercase tracking-[0.2em] text-foreground border border-white/20 rounded-full bg-white/5 backdrop-blur-sm">
               {category}
             </span>
           </div>

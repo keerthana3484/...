@@ -43,23 +43,23 @@ export default function Navbar() {
             : 'bg-transparent py-8'
         }`}
       >
-        <div className="max-w-7xl mx-auto px-6 grid grid-cols-2 lg:grid-cols-3 items-center">
+        <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
           
           {/* Left: Logo */}
           <div 
-            className="text-lg font-medium text-foreground cursor-pointer tracking-wider flex items-center"
+            className="text-lg font-medium text-foreground cursor-pointer tracking-wider flex items-center z-10"
             onClick={() => scrollTo('#hero')}
           >
             Ajay Tharendra
           </div>
 
           {/* Center: Navigation (Desktop) */}
-          <div className="hidden lg:flex items-center justify-center gap-3">
+          <div className="hidden lg:flex items-center justify-center gap-2 xl:gap-3 absolute left-1/2 -translate-x-1/2 w-max">
             {LINKS.map((link) => (
               <button
                 key={link.label}
                 onClick={() => scrollTo(link.href)}
-                className="group relative flex items-center justify-center px-4 py-1.5 border border-foreground/20 text-foreground rounded-full text-[10px] font-medium tracking-widest uppercase overflow-hidden transition-all duration-700 ease-out hover:border-transparent cursor-pointer"
+                className="group relative flex-shrink-0 flex items-center justify-center px-4 xl:px-6 py-2 xl:py-2.5 border border-foreground/20 text-foreground rounded-full text-[10px] xl:text-xs font-medium tracking-widest uppercase overflow-hidden transition-all duration-700 ease-out hover:border-transparent cursor-pointer whitespace-nowrap"
               >
                 <span className="absolute inset-0 w-full h-full bg-foreground rounded-full scale-0 group-hover:scale-100 transition-transform duration-500 ease-out origin-center" />
                 <span className="relative z-10 group-hover:text-background transition-colors duration-500">
@@ -74,7 +74,7 @@ export default function Navbar() {
             
             <button 
               onClick={() => scrollTo('#contact')}
-              className="hidden lg:flex group relative items-center justify-center px-6 py-2 border border-foreground/20 text-foreground rounded-full text-xs font-medium tracking-widest uppercase overflow-hidden transition-all duration-700 ease-out hover:border-transparent cursor-pointer"
+              className="hidden lg:flex group relative items-center justify-center px-8 py-3 border border-foreground/20 text-foreground rounded-full text-xs font-medium tracking-widest uppercase overflow-hidden transition-all duration-700 ease-out hover:border-transparent cursor-pointer"
             >
               <span className="absolute inset-0 w-full h-full bg-foreground rounded-full scale-0 group-hover:scale-100 transition-transform duration-500 ease-out origin-center" />
               <span className="relative z-10 group-hover:text-background transition-colors duration-500">
@@ -131,7 +131,7 @@ export default function Navbar() {
               animate={{ opacity: isMobileMenuOpen ? 1 : 0, y: isMobileMenuOpen ? 0 : 20 }}
               transition={{ delay: 0.1 * LINKS.length, duration: 0.5, ease: 'easeOut' }}
               onClick={() => scrollTo('#contact')}
-              className="mt-8 px-8 py-3 border border-foreground/20 text-foreground rounded-full uppercase tracking-widest text-sm hover:bg-foreground hover:text-background transition-colors duration-300"
+              className="mt-8 px-8 py-3 border border-foreground/20 text-foreground rounded-full font-medium uppercase tracking-widest text-sm hover:bg-foreground hover:text-background transition-colors duration-300"
             >
               Let's Talk
             </motion.button>

@@ -35,7 +35,7 @@ export default function PosterCard({ title, category, gradient, src, onClick }: 
       {/* Title & category — always visible */}
       <div className="absolute bottom-0 left-0 right-0 p-5 z-10">
         <h3 className="text-lg font-serif text-white font-bold drop-shadow-md">{title}</h3>
-        <p className="mt-1 text-xs uppercase tracking-widest text-[hsl(38_60%_65%)] font-medium">{category}</p>
+        <p className="mt-1 text-xs uppercase tracking-widest text-[hsl(38_60%_65%)] font-mono">{category}</p>
       </div>
 
       {/* View icon */}

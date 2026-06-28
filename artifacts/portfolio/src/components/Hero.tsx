@@ -103,7 +103,7 @@ export default function Hero() {
         
         {/* Top: Small uppercase text and mute button */}
         <div className="flex justify-between items-start pointer-events-auto w-full">
-          <p ref={overlayTextTopRef} className="uppercase tracking-[0.2em] text-[11px] sm:text-xs text-foreground/80 font-medium opacity-0">
+          <p ref={overlayTextTopRef} className="uppercase tracking-[0.2em] text-[11px] sm:text-xs text-foreground/80 font-mono opacity-0">
             Video Editor<br />
             Motion Designer<br />
             Visual Storyteller

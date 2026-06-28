@@ -87,7 +87,7 @@ export default function About() {
         {/* Content Side */}
         <div ref={contentRef} className="flex flex-col">
           <div className="mb-10 opacity-0">
-            <span className="text-[10px] uppercase tracking-[0.25em] text-foreground/50 font-medium mb-6 block">
+            <span className="text-[10px] uppercase tracking-[0.25em] text-foreground/50 font-mono mb-6 block">
               The Editor
             </span>
             <h2 className="text-5xl sm:text-6xl lg:text-7xl font-serif text-foreground mb-6 leading-tight tracking-tight">
@@ -105,7 +105,7 @@ export default function About() {
           </p>
 
           <div className="mb-16 opacity-0">
-            <h3 className="text-[10px] uppercase tracking-[0.2em] text-foreground/40 mb-6 font-medium">Expertise</h3>
+            <h3 className="text-[10px] uppercase tracking-[0.2em] text-foreground/40 mb-6 font-mono">Expertise</h3>
             <div className="flex flex-wrap gap-3">
               {skills.map((skill, idx) => (
                 <div key={idx} className="flex items-center gap-2 px-4 py-2 rounded-full border border-white/5 bg-white/[0.02] hover:bg-white/[0.05] hover:border-white/10 transition-colors">
@@ -117,7 +117,7 @@ export default function About() {
           </div>
 
           <div className="opacity-0">
-            <h3 className="text-[10px] uppercase tracking-[0.2em] text-foreground/40 mb-6 font-medium">Software Stack</h3>
+            <h3 className="text-[10px] uppercase tracking-[0.2em] text-foreground/40 mb-6 font-mono">Software Stack</h3>
             <div className="flex flex-wrap gap-2">
               {software.map((item, idx) => (
                 <span key={idx} className="px-4 py-2 text-xs tracking-wider uppercase text-foreground/60 bg-transparent border border-white/5 rounded-full hover:text-foreground transition-colors">

@@ -103,17 +103,17 @@ export default function AnimationsSection() {
 
       <div ref={rowsRef} className="space-y-24">
         <div className="opacity-0">
-          <h3 className="text-[10px] uppercase tracking-[0.2em] text-foreground/40 mb-8 font-medium">2D Animation</h3>
+          <h3 className="text-[10px] uppercase tracking-[0.2em] text-foreground/40 mb-8 font-mono">2D Animation</h3>
           <HorizontalRow items={twoDAnimations} />
         </div>
 
         <div className="opacity-0">
-          <h3 className="text-[10px] uppercase tracking-[0.2em] text-foreground/40 mb-8 font-medium">Title Animations</h3>
+          <h3 className="text-[10px] uppercase tracking-[0.2em] text-foreground/40 mb-8 font-mono">Title Animations</h3>
           <HorizontalRow items={titleAnimations} />
         </div>
 
         <div className="opacity-0">
-          <h3 className="text-[10px] uppercase tracking-[0.2em] text-foreground/40 mb-8 font-medium">Text Animations</h3>
+          <h3 className="text-[10px] uppercase tracking-[0.2em] text-foreground/40 mb-8 font-mono">Text Animations</h3>
           <HorizontalRow items={Motionposter} />
         </div>
       </div>

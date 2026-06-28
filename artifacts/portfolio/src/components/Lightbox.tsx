@@ -85,7 +85,7 @@ export default function Lightbox({ isOpen, onClose, onNext, onPrev, poster }: Li
             {/* Bottom caption */}
             <div className="absolute bottom-0 left-0 right-0 p-8 bg-gradient-to-t from-black/80 to-transparent">
               <h2 className="text-3xl md:text-4xl font-serif text-white font-bold">{poster.title}</h2>
-              <p className="mt-2 text-sm uppercase tracking-[0.2em] text-primary/90 font-medium">{poster.category}</p>
+              <p className="mt-2 text-sm uppercase tracking-[0.2em] text-primary/90 font-mono">{poster.category}</p>
             </div>
           </motion.div>
         </motion.div>
