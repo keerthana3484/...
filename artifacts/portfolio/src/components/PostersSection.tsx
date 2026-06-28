@@ -1,21 +1,17 @@
-import { useState } from 'react';
-import { motion } from 'framer-motion';
+import { useState, useRef, useEffect } from 'react';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import PosterCard from './PosterCard';
 import Lightbox from './Lightbox';
 import { postersData } from '../data/postersData';
 
-const fadeUp = {
-  hidden: { opacity: 0, y: 40, filter: 'blur(10px)' },
-  visible: { opacity: 1, y: 0, filter: 'blur(0px)', transition: { duration: 0.8, ease: [0.25, 0.46, 0.45, 0.94] as const } }
-};
-
-const stagger = {
-  hidden: {},
-  visible: { transition: { staggerChildren: 0.1 } }
-};
+gsap.registerPlugin(ScrollTrigger);
 
 export default function PostersSection() {
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
+  const sectionRef = useRef<HTMLElement>(null);
+  const headerRef = useRef<HTMLDivElement>(null);
+  const gridRef = useRef<HTMLDivElement>(null);
 
   const handleNext = () => {
     if (selectedIndex !== null) {
@@ -29,29 +25,60 @@ export default function PostersSection() {
     }
   };
 
-  return (
-    <section id="posters" className="py-32 px-6 lg:px-12 w-full max-w-7xl mx-auto">
-      <motion.div 
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, amount: 0.2 }}
-        variants={stagger}
-        className="mb-16"
-      >
-        <motion.h2 variants={fadeUp} className="text-4xl sm:text-5xl lg:text-6xl font-serif text-foreground mb-4">
-          Poster <span className="italic text-primary">Designs</span>
-        </motion.h2>
-      </motion.div>
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      if (headerRef.current) {
+        gsap.fromTo(headerRef.current, {
+          opacity: 0,
+          y: 40,
+        }, {
+          opacity: 1,
+          y: 0,
+          duration: 1,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: headerRef.current,
+            start: 'top 80%',
+          }
+        });
+      }
 
-      <motion.div 
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, amount: 0.1 }}
-        variants={stagger}
+      if (gridRef.current) {
+        const items = gridRef.current.children;
+        gsap.fromTo(items, {
+          opacity: 0,
+          y: 40,
+        }, {
+          opacity: 1,
+          y: 0,
+          duration: 1,
+          stagger: 0.1,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: gridRef.current,
+            start: 'top 85%',
+          }
+        });
+      }
+    }, sectionRef);
+
+    return () => ctx.revert();
+  }, []);
+
+  return (
+    <section ref={sectionRef} id="posters" className="py-32 sm:py-40 px-6 w-full max-w-7xl mx-auto border-t border-white/5">
+      <div ref={headerRef} className="mb-20 opacity-0">
+        <h2 className="text-5xl sm:text-7xl lg:text-8xl font-serif text-foreground mb-6 tracking-tight">
+          Poster <span className="italic text-foreground/60">Designs</span>
+        </h2>
+      </div>
+
+      <div 
+        ref={gridRef}
         className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8"
       >
         {postersData.map((poster, index) => (
-          <motion.div key={poster.id} variants={fadeUp}>
+          <div key={poster.id} className="opacity-0">
             <PosterCard
               title={poster.title}
               category={poster.category}
@@ -59,9 +86,9 @@ export default function PostersSection() {
               src={poster.src}
               onClick={() => setSelectedIndex(index)}
             />
-          </motion.div>
+          </div>
         ))}
-      </motion.div>
+      </div>
 
       <Lightbox
         isOpen={selectedIndex !== null}

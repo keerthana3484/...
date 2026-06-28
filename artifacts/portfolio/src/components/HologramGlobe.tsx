@@ -4,7 +4,7 @@ import { useScroll, useTransform, useMotionValueEvent } from 'framer-motion';
 // ─── Constants ────────────────────────────────────────────────────────────────
 const R   = 115;   // Saturn radius in canvas px
 const FOV = 500;
-const BR  = 193; const BG = 148; const BB = 72; // bronze RGB
+const BR  = 138; const BG = 140; const BB = 110; // muted olive RGB
 
 const RING_INC = 22 * (Math.PI / 180);  // Tilt Saturn's equator and rings towards viewer
 const AXIS_TILT = -15 * (Math.PI / 180); // Tilt Saturn's axis sideways

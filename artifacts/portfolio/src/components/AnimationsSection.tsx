@@ -1,17 +1,10 @@
 import { useRef, useEffect, useState } from 'react';
-import { motion } from 'framer-motion';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import VideoCard from './VideoCard';
 import { twoDAnimations, titleAnimations, Motionposter, AnimationItem } from '../data/animationsData';
 
-const fadeUp = {
-  hidden: { opacity: 0, y: 40, filter: 'blur(10px)' },
-  visible: { opacity: 1, y: 0, filter: 'blur(0px)', transition: { duration: 0.8, ease: [0.25, 0.46, 0.45, 0.94] as const } }
-};
-
-const stagger = {
-  hidden: {},
-  visible: { transition: { staggerChildren: 0.1 } }
-};
+gsap.registerPlugin(ScrollTrigger);
 
 function HorizontalRow({ items }: { items: AnimationItem[] }) {
   const rowRef = useRef<HTMLDivElement>(null);
@@ -42,45 +35,87 @@ function HorizontalRow({ items }: { items: AnimationItem[] }) {
         ))}
       </div>
       {overflows && (
-        <div className="pointer-events-none absolute right-0 top-0 h-full w-16 bg-gradient-to-l from-background to-transparent" />
+        <div className="pointer-events-none absolute right-0 top-0 h-full w-24 bg-gradient-to-l from-background to-transparent" />
       )}
     </div>
   );
 }
 
 export default function AnimationsSection() {
+  const sectionRef = useRef<HTMLElement>(null);
+  const headerRef = useRef<HTMLDivElement>(null);
+  const rowsRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      // Animate Header
+      if (headerRef.current) {
+        const headerChildren = headerRef.current.children;
+        gsap.fromTo(headerChildren, {
+          opacity: 0,
+          y: 40,
+        }, {
+          opacity: 1,
+          y: 0,
+          duration: 1,
+          stagger: 0.15,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: headerRef.current,
+            start: 'top 80%',
+          }
+        });
+      }
+
+      // Animate Rows
+      if (rowsRef.current) {
+        const rows = rowsRef.current.children;
+        gsap.fromTo(rows, {
+          opacity: 0,
+          y: 40,
+        }, {
+          opacity: 1,
+          y: 0,
+          duration: 1,
+          stagger: 0.2,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: rowsRef.current,
+            start: 'top 85%',
+          }
+        });
+      }
+    }, sectionRef);
+
+    return () => ctx.revert();
+  }, []);
+
   return (
-    <section id="animations" className="py-32 w-full max-w-7xl mx-auto px-6 lg:px-12">
-      <motion.div
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, amount: 0.1 }}
-        variants={stagger}
-        className="mb-16"
-      >
-        <motion.h2 variants={fadeUp} className="text-4xl sm:text-5xl lg:text-6xl font-serif text-foreground mb-4">
-          Motion <span className="italic text-primary">Graphics</span>
-        </motion.h2>
-        <motion.p variants={fadeUp} className="text-muted-foreground text-lg">
+    <section ref={sectionRef} id="animations" className="py-32 sm:py-40 w-full max-w-7xl mx-auto px-6 border-t border-white/5">
+      <div ref={headerRef} className="mb-24">
+        <h2 className="text-5xl sm:text-7xl lg:text-8xl font-serif text-foreground mb-6 tracking-tight opacity-0">
+          Motion <span className="italic text-foreground/60">Graphics</span>
+        </h2>
+        <p className="text-foreground/60 text-lg sm:text-xl font-light opacity-0">
           2D animations, title sequences, and kinetic typography.
-        </motion.p>
-      </motion.div>
+        </p>
+      </div>
 
-      <div className="space-y-20">
-        <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.1 }} variants={stagger}>
-          <motion.h3 variants={fadeUp} className="text-xl font-serif mb-6 text-foreground/80">2D Animation</motion.h3>
+      <div ref={rowsRef} className="space-y-24">
+        <div className="opacity-0">
+          <h3 className="text-[10px] uppercase tracking-[0.2em] text-foreground/40 mb-8 font-medium">2D Animation</h3>
           <HorizontalRow items={twoDAnimations} />
-        </motion.div>
+        </div>
 
-        <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.1 }} variants={stagger}>
-          <motion.h3 variants={fadeUp} className="text-xl font-serif mb-6 text-foreground/80">Title Animations</motion.h3>
+        <div className="opacity-0">
+          <h3 className="text-[10px] uppercase tracking-[0.2em] text-foreground/40 mb-8 font-medium">Title Animations</h3>
           <HorizontalRow items={titleAnimations} />
-        </motion.div>
+        </div>
 
-        <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.1 }} variants={stagger}>
-          <motion.h3 variants={fadeUp} className="text-xl font-serif mb-6 text-foreground/80">Text Animations</motion.h3>
+        <div className="opacity-0">
+          <h3 className="text-[10px] uppercase tracking-[0.2em] text-foreground/40 mb-8 font-medium">Text Animations</h3>
           <HorizontalRow items={Motionposter} />
-        </motion.div>
+        </div>
       </div>
     </section>
   );

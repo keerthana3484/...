@@ -1,15 +1,9 @@
-import { motion } from 'framer-motion';
+import { useEffect, useRef } from 'react';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { Quote } from 'lucide-react';
 
-const fadeUp = {
-  hidden: { opacity: 0, y: 40, filter: 'blur(10px)' },
-  visible: { opacity: 1, y: 0, filter: 'blur(0px)', transition: { duration: 0.8, ease: [0.25, 0.46, 0.45, 0.94] as const } }
-};
-
-const stagger = {
-  hidden: {},
-  visible: { transition: { staggerChildren: 0.2 } }
-};
+gsap.registerPlugin(ScrollTrigger);
 
 const reviews = [
   {
@@ -30,44 +24,77 @@ const reviews = [
 ];
 
 export default function Reviews() {
-  return (
-    <section id="reviews" className="py-32 px-6 lg:px-12 w-full max-w-7xl mx-auto">
-      <motion.div 
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, amount: 0.2 }}
-        variants={stagger}
-        className="mb-16 text-center"
-      >
-        <motion.h2 variants={fadeUp} className="text-4xl sm:text-5xl lg:text-6xl font-serif text-foreground mb-4">
-          What Clients <span className="italic text-primary">Say</span>
-        </motion.h2>
-      </motion.div>
+  const sectionRef = useRef<HTMLElement>(null);
+  const headerRef = useRef<HTMLDivElement>(null);
+  const gridRef = useRef<HTMLDivElement>(null);
 
-      <motion.div 
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, amount: 0.1 }}
-        variants={stagger}
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      if (headerRef.current) {
+        gsap.fromTo(headerRef.current, {
+          opacity: 0,
+          y: 40,
+        }, {
+          opacity: 1,
+          y: 0,
+          duration: 1,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: headerRef.current,
+            start: 'top 80%',
+          }
+        });
+      }
+
+      if (gridRef.current) {
+        gsap.fromTo(gridRef.current.children, {
+          opacity: 0,
+          y: 40,
+        }, {
+          opacity: 1,
+          y: 0,
+          duration: 1,
+          stagger: 0.15,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: gridRef.current,
+            start: 'top 85%',
+          }
+        });
+      }
+    }, sectionRef);
+
+    return () => ctx.revert();
+  }, []);
+
+  return (
+    <section ref={sectionRef} id="reviews" className="py-32 sm:py-40 px-6 w-full max-w-7xl mx-auto border-t border-white/5">
+      <div ref={headerRef} className="mb-20 opacity-0">
+        <h2 className="text-5xl sm:text-7xl lg:text-8xl font-serif text-foreground mb-6 tracking-tight">
+          Client <span className="italic text-foreground/60">Stories</span>
+        </h2>
+      </div>
+
+      <div 
+        ref={gridRef}
         className="grid grid-cols-1 md:grid-cols-3 gap-6"
       >
         {reviews.map((review, i) => (
-          <motion.div 
+          <div 
             key={i} 
-            variants={fadeUp}
-            className="flex flex-col p-8 rounded-2xl bg-white/5 backdrop-blur-md border border-white/10 hover:border-primary/30 transition-colors duration-500"
+            className="flex flex-col p-8 sm:p-10 rounded-sm bg-white/[0.02] border border-white/5 hover:border-white/20 transition-colors duration-500 opacity-0"
           >
-            <Quote className="w-8 h-8 text-primary/60 mb-6" />
-            <p className="text-foreground/90 leading-relaxed flex-1 italic text-lg font-serif">
+            <Quote className="w-8 h-8 text-foreground/20 mb-8" />
+            <p className="text-foreground/80 leading-relaxed flex-1 text-lg sm:text-xl font-serif italic font-light tracking-wide">
               "{review.quote}"
             </p>
-            <div className="mt-8 pt-6 border-t border-border">
-              <p className="font-medium text-foreground tracking-wide">{review.name}</p>
-              <p className="text-sm text-primary uppercase tracking-wider mt-1">{review.title}</p>
+            <div className="mt-10 pt-6 border-t border-white/5">
+              <p className="font-medium text-foreground text-sm tracking-wide">{review.name}</p>
+              <p className="text-[10px] text-foreground/50 uppercase tracking-widest mt-1.5">{review.title}</p>
             </div>
-          </motion.div>
+          </div>
         ))}
-      </motion.div>
+      </div>
     </section>
   );
 }

@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Inter:wght@300;400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&family=Inter:wght@300;400;500;600&display=swap');
 @import "tailwindcss";
 @import "tw-animate-css";
 @plugin "@tailwindcss/typography";
@@ -46,56 +46,56 @@
 }
 
 :root {
-  --background: 0 0% 4%;
-  --foreground: 45 20% 88%;
-  --card: 0 0% 7%;
-  --card-foreground: 45 20% 88%;
-  --card-border: 38 30% 20%;
-  --border: 38 20% 15%;
-  --primary: 38 60% 55%;
-  --primary-foreground: 0 0% 4%;
-  --muted: 0 0% 10%;
-  --muted-foreground: 45 10% 55%;
-  --accent: 38 60% 55%;
-  --accent-foreground: 0 0% 4%;
-  --popover: 0 0% 7%;
-  --popover-foreground: 45 20% 88%;
-  --popover-border: 38 30% 20%;
-  --secondary: 0 0% 12%;
-  --secondary-foreground: 45 20% 88%;
+  --background: 0 0% 7%; /* #111111 */
+  --foreground: 60 10% 95%; /* #F2F2F0 */
+  --card: 0 0% 12%; /* #1E1E1E */
+  --card-foreground: 60 10% 95%; /* #F2F2F0 */
+  --card-border: 0 0% 100% / 0.08;
+  --border: 0 0% 100% / 0.08;
+  --primary: 60 10% 95%;
+  --primary-foreground: 0 0% 7%;
+  --muted: 0 0% 9%; /* #171717 */
+  --muted-foreground: 60 4% 73%; /* #BDBDB6 */
+  --accent: 64 12% 49%; /* #8A8C6E */
+  --accent-foreground: 0 0% 7%;
+  --popover: 0 0% 12%; /* #1E1E1E */
+  --popover-foreground: 60 10% 95%; /* #F2F2F0 */
+  --popover-border: 0 0% 100% / 0.08;
+  --secondary: 0 0% 9%; /* #171717 */
+  --secondary-foreground: 60 10% 95%; /* #F2F2F0 */
   --destructive: 0 62.8% 30.6%;
-  --destructive-foreground: 45 20% 88%;
-  --input: 38 20% 15%;
-  --ring: 38 60% 55%;
+  --destructive-foreground: 60 10% 95%;
+  --input: 0 0% 100% / 0.08;
+  --ring: 64 12% 49%;
 
   --app-font-sans: 'Inter', sans-serif;
-  --app-font-serif: 'Playfair Display', Georgia, serif;
+  --app-font-serif: 'Cormorant Garamond', serif;
   --app-font-mono: Menlo, monospace;
   --radius: .5rem;
 }
 
 .dark {
-  --background: 0 0% 4%;
-  --foreground: 45 20% 88%;
-  --card: 0 0% 7%;
-  --card-foreground: 45 20% 88%;
-  --card-border: 38 30% 20%;
-  --border: 38 20% 15%;
-  --primary: 38 60% 55%;
-  --primary-foreground: 0 0% 4%;
-  --muted: 0 0% 10%;
-  --muted-foreground: 45 10% 55%;
-  --accent: 38 60% 55%;
-  --accent-foreground: 0 0% 4%;
-  --popover: 0 0% 7%;
-  --popover-foreground: 45 20% 88%;
-  --popover-border: 38 30% 20%;
-  --secondary: 0 0% 12%;
-  --secondary-foreground: 45 20% 88%;
+  --background: 0 0% 7%;
+  --foreground: 60 10% 95%;
+  --card: 0 0% 12%;
+  --card-foreground: 60 10% 95%;
+  --card-border: 0 0% 100% / 0.08;
+  --border: 0 0% 100% / 0.08;
+  --primary: 60 10% 95%;
+  --primary-foreground: 0 0% 7%;
+  --muted: 0 0% 9%;
+  --muted-foreground: 60 4% 73%;
+  --accent: 64 12% 49%;
+  --accent-foreground: 0 0% 7%;
+  --popover: 0 0% 12%;
+  --popover-foreground: 60 10% 95%;
+  --popover-border: 0 0% 100% / 0.08;
+  --secondary: 0 0% 9%;
+  --secondary-foreground: 60 10% 95%;
   --destructive: 0 62.8% 30.6%;
-  --destructive-foreground: 45 20% 88%;
-  --input: 38 20% 15%;
-  --ring: 38 60% 55%;
+  --destructive-foreground: 60 10% 95%;
+  --input: 0 0% 100% / 0.08;
+  --ring: 64 12% 49%;
 }
 
 @layer base {
@@ -105,8 +105,8 @@
 
   html { overflow-x: hidden; }
   body { 
-    background: #090909; 
-    color: hsl(45 20% 88%); 
+    background: #111111; 
+    color: #F2F2F0; 
     cursor: none;
     overflow-x: hidden;
     @apply font-sans antialiased;

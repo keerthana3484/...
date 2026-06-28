@@ -1,17 +1,11 @@
 import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { worksData } from '../data/worksData';
 import VideoCard from './VideoCard';
 
-const fadeUp = {
-  hidden: { opacity: 0, y: 40, filter: 'blur(10px)' },
-  visible: { opacity: 1, y: 0, filter: 'blur(0px)', transition: { duration: 0.8, ease: [0.25, 0.46, 0.45, 0.94] as const } }
-};
-
-const stagger = {
-  hidden: {},
-  visible: { transition: { staggerChildren: 0.1 } }
-};
+gsap.registerPlugin(ScrollTrigger);
 
 type Category = keyof typeof worksData;
 
@@ -44,54 +38,75 @@ function HorizontalRow({ items }: { items: typeof worksData[Category] }) {
         ))}
       </div>
       {overflows && (
-        <div className="pointer-events-none absolute right-0 top-0 h-full w-16 bg-gradient-to-l from-background to-transparent" />
+        <div className="pointer-events-none absolute right-0 top-0 h-full w-24 bg-gradient-to-l from-background to-transparent" />
       )}
     </div>
   );
 }
 
 export default function Works() {
+  const sectionRef = useRef<HTMLElement>(null);
+  const headerRef = useRef<HTMLDivElement>(null);
+  
   const categories = Object.keys(worksData) as Category[];
   const [activeTab, setActiveTab] = useState<Category>(categories[0]);
 
-  return (
-    <section id="works" className="py-32 w-full max-w-7xl mx-auto px-6 lg:px-12">
-      <motion.div
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, amount: 0.1 }}
-        variants={stagger}
-        className="mb-16"
-      >
-        <motion.h2 variants={fadeUp} className="text-4xl sm:text-5xl lg:text-6xl font-serif text-foreground mb-12">
-          Selected <span className="italic text-primary">Works</span>
-        </motion.h2>
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      if (headerRef.current) {
+        const children = headerRef.current.children;
+        gsap.fromTo(children, {
+          opacity: 0,
+          y: 40,
+        }, {
+          opacity: 1,
+          y: 0,
+          duration: 1,
+          stagger: 0.15,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: headerRef.current,
+            start: 'top 80%',
+          }
+        });
+      }
+    }, sectionRef);
 
-        <motion.div variants={fadeUp} className="flex flex-wrap gap-2 md:gap-4">
+    return () => ctx.revert();
+  }, []);
+
+  return (
+    <section ref={sectionRef} id="works" className="py-32 sm:py-40 w-full max-w-7xl mx-auto px-6 border-t border-white/5">
+      <div ref={headerRef} className="mb-20">
+        <h2 className="text-5xl sm:text-7xl lg:text-8xl font-serif text-foreground mb-12 tracking-tight opacity-0">
+          Selected <span className="italic text-foreground/60">Works</span>
+        </h2>
+
+        <div className="flex flex-wrap gap-3 opacity-0">
           {categories.map((cat) => (
             <button
               key={cat}
               onClick={() => setActiveTab(cat)}
-              className={`px-5 py-2.5 text-xs sm:text-sm font-medium tracking-wider uppercase rounded-full transition-all duration-300 ${
+              className={`px-6 py-2.5 text-[10px] sm:text-xs font-medium tracking-[0.2em] uppercase rounded-full transition-all duration-500 ${
                 activeTab === cat
-                  ? 'bg-primary text-primary-foreground'
-                  : 'bg-card text-muted-foreground border border-card-border hover:border-primary/50 hover:text-foreground'
+                  ? 'bg-foreground text-background border-transparent'
+                  : 'bg-transparent text-foreground/60 border border-white/10 hover:border-white/30 hover:text-foreground'
               }`}
             >
               {cat}
             </button>
           ))}
-        </motion.div>
-      </motion.div>
+        </div>
+      </div>
 
       <div className="min-h-[400px]">
         <AnimatePresence mode="wait">
           <motion.div
             key={activeTab}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.4, ease: 'easeOut' }}
+            initial={{ opacity: 0, filter: 'blur(10px)', y: 20 }}
+            animate={{ opacity: 1, filter: 'blur(0px)', y: 0 }}
+            exit={{ opacity: 0, filter: 'blur(10px)', y: -20 }}
+            transition={{ duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] }}
           >
             <HorizontalRow items={worksData[activeTab]} />
           </motion.div>

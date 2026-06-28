@@ -1,16 +1,10 @@
-import { motion } from 'framer-motion';
+import { useEffect, useRef } from 'react';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { FaInstagram, FaWhatsapp } from 'react-icons/fa';
 import { Mail } from 'lucide-react';
 
-const fadeUp = {
-  hidden: { opacity: 0, y: 40, filter: 'blur(10px)' },
-  visible: { opacity: 1, y: 0, filter: 'blur(0px)', transition: { duration: 0.8, ease: [0.25, 0.46, 0.45, 0.94] as const } }
-};
-
-const stagger = {
-  hidden: {},
-  visible: { transition: { staggerChildren: 0.1 } }
-};
+gsap.registerPlugin(ScrollTrigger);
 
 const contacts = [
   {
@@ -34,48 +28,82 @@ const contacts = [
 ];
 
 export default function Contact() {
-  return (
-    <section id="contact" className="py-32 px-6 lg:px-12 w-full max-w-7xl mx-auto">
-      <motion.div 
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, amount: 0.2 }}
-        variants={stagger}
-        className="mb-20 text-center"
-      >
-        <motion.h2 variants={fadeUp} className="text-4xl sm:text-5xl lg:text-7xl font-serif text-foreground mb-6">
-          Let's create <br className="sm:hidden" />
-          <span className="italic text-primary">something unforgettable.</span>
-        </motion.h2>
-        <motion.p variants={fadeUp} className="text-muted-foreground text-lg max-w-2xl mx-auto">
-          Available for freelance projects, creative collaborations, and more.
-        </motion.p>
-      </motion.div>
+  const sectionRef = useRef<HTMLElement>(null);
+  const headerRef = useRef<HTMLDivElement>(null);
+  const gridRef = useRef<HTMLDivElement>(null);
 
-      <motion.div 
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, amount: 0.1 }}
-        variants={stagger}
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      if (headerRef.current) {
+        gsap.fromTo(headerRef.current.children, {
+          opacity: 0,
+          y: 40,
+        }, {
+          opacity: 1,
+          y: 0,
+          duration: 1,
+          stagger: 0.15,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: headerRef.current,
+            start: 'top 80%',
+          }
+        });
+      }
+
+      if (gridRef.current) {
+        gsap.fromTo(gridRef.current.children, {
+          opacity: 0,
+          y: 40,
+        }, {
+          opacity: 1,
+          y: 0,
+          duration: 1,
+          stagger: 0.15,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: gridRef.current,
+            start: 'top 85%',
+          }
+        });
+      }
+    }, sectionRef);
+
+    return () => ctx.revert();
+  }, []);
+
+  return (
+    <section ref={sectionRef} id="contact" className="py-32 sm:py-40 px-6 w-full max-w-7xl mx-auto border-t border-white/5">
+      <div ref={headerRef} className="mb-24 text-center">
+        <h2 className="text-5xl sm:text-7xl lg:text-9xl font-serif text-foreground mb-8 tracking-tight opacity-0">
+          Let's create <br className="sm:hidden" />
+          <span className="italic text-foreground/60">something</span>
+        </h2>
+        <p className="text-foreground/50 text-lg sm:text-xl font-light opacity-0">
+          Available for freelance projects, creative collaborations, and more.
+        </p>
+      </div>
+
+      <div 
+        ref={gridRef}
         className="grid grid-cols-1 md:grid-cols-3 gap-6"
       >
         {contacts.map((contact, i) => (
-          <motion.a
+          <a
             key={i}
-            variants={fadeUp}
             href={contact.href}
             target="_blank"
             rel="noopener noreferrer"
-            className="group flex flex-col items-center text-center p-10 rounded-2xl bg-card/50 backdrop-blur-sm border border-card-border hover:border-primary/50 hover:-translate-y-2 transition-all duration-500"
+            className="group flex flex-col items-center text-center p-12 rounded-sm bg-white/[0.02] border border-white/5 hover:border-white/20 transition-all duration-700 opacity-0"
           >
-            <div className="w-16 h-16 rounded-full bg-background flex items-center justify-center border border-border group-hover:border-primary/50 group-hover:shadow-[0_0_30px_rgba(204,153,51,0.15)] transition-all duration-500 mb-6">
-              <contact.icon className="w-6 h-6 text-foreground group-hover:text-primary transition-colors" />
+            <div className="w-16 h-16 rounded-full flex items-center justify-center border border-white/10 group-hover:bg-foreground group-hover:text-background transition-all duration-500 mb-8">
+              <contact.icon className="w-6 h-6 text-foreground/80 group-hover:text-background transition-colors" />
             </div>
-            <h3 className="text-xl font-medium text-foreground mb-2">{contact.label}</h3>
-            <p className="text-primary font-mono text-sm tracking-wide">{contact.handle}</p>
-          </motion.a>
+            <h3 className="text-lg font-medium text-foreground tracking-wide mb-3">{contact.label}</h3>
+            <p className="text-foreground/50 text-sm tracking-wide group-hover:text-foreground transition-colors">{contact.handle}</p>
+          </a>
         ))}
-      </motion.div>
+      </div>
     </section>
   );
 }

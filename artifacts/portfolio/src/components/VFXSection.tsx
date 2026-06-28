@@ -1,19 +1,16 @@
 import { useRef, useEffect, useState } from 'react';
-import { motion } from 'framer-motion';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import VideoCard from './VideoCard';
 import { vfxData } from '../data/vfxData';
 
-const fadeUp = {
-  hidden: { opacity: 0, y: 40, filter: 'blur(10px)' },
-  visible: { opacity: 1, y: 0, filter: 'blur(0px)', transition: { duration: 0.8, ease: [0.25, 0.46, 0.45, 0.94] as const } }
-};
-
-const stagger = {
-  hidden: {},
-  visible: { transition: { staggerChildren: 0.1 } }
-};
+gsap.registerPlugin(ScrollTrigger);
 
 export default function VFXSection() {
+  const sectionRef = useRef<HTMLElement>(null);
+  const headerRef = useRef<HTMLDivElement>(null);
+  const rowContainerRef = useRef<HTMLDivElement>(null);
+  
   const rowRef = useRef<HTMLDivElement>(null);
   const [overflows, setOverflows] = useState(false);
 
@@ -26,32 +23,60 @@ export default function VFXSection() {
     return () => window.removeEventListener('resize', check);
   }, []);
 
-  return (
-    <section id="vfx" className="py-32 w-full max-w-7xl mx-auto px-6 lg:px-12">
-      <motion.div
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, amount: 0.2 }}
-        variants={stagger}
-        className="mb-16"
-      >
-        <motion.h2 variants={fadeUp} className="text-4xl sm:text-5xl lg:text-6xl font-serif text-foreground mb-4">
-          Visual <span className="italic text-primary">Effects</span>
-        </motion.h2>
-      </motion.div>
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      // Animate Header
+      if (headerRef.current) {
+        gsap.fromTo(headerRef.current, {
+          opacity: 0,
+          y: 40,
+        }, {
+          opacity: 1,
+          y: 0,
+          duration: 1,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: headerRef.current,
+            start: 'top 80%',
+          }
+        });
+      }
 
-      <motion.div
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, amount: 0.2 }}
-        variants={stagger}
-      >
+      // Animate Row
+      if (rowContainerRef.current) {
+        gsap.fromTo(rowContainerRef.current, {
+          opacity: 0,
+          y: 40,
+        }, {
+          opacity: 1,
+          y: 0,
+          duration: 1,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: rowContainerRef.current,
+            start: 'top 85%',
+          }
+        });
+      }
+    }, sectionRef);
+
+    return () => ctx.revert();
+  }, []);
+
+  return (
+    <section ref={sectionRef} id="vfx" className="py-32 sm:py-40 w-full max-w-7xl mx-auto px-6 border-t border-white/5">
+      <div ref={headerRef} className="mb-20 opacity-0">
+        <h2 className="text-5xl sm:text-7xl lg:text-8xl font-serif text-foreground mb-6 tracking-tight">
+          Visual <span className="italic text-foreground/60">Effects</span>
+        </h2>
+      </div>
+
+      <div ref={rowContainerRef} className="opacity-0">
         <div className="relative">
           <div ref={rowRef} className="scroll-row scroll-row-video">
             {vfxData.map((item) => (
-              <motion.div
+              <div
                 key={item.id}
-                variants={fadeUp}
                 className="h-full flex-shrink-0"
               >
                 <VideoCard
@@ -61,14 +86,14 @@ export default function VFXSection() {
                   src={item.src}
                   thumbnail={item.thumbnail}
                 />
-              </motion.div>
+              </div>
             ))}
           </div>
           {overflows && (
-            <div className="pointer-events-none absolute right-0 top-0 h-full w-16 bg-gradient-to-l from-background to-transparent" />
+            <div className="pointer-events-none absolute right-0 top-0 h-full w-24 bg-gradient-to-l from-background to-transparent" />
           )}
         </div>
-      </motion.div>
+      </div>
     </section>
   );
 }
